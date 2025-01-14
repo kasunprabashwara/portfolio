@@ -1,101 +1,125 @@
-import Image from "next/image";
+"use client";
+import { GridBox, GridSection,FilledRectangle, Bullet, GridBullet } from '@/components/GridComponents';
+import { arrowPatterns, sections } from '@/data/Data';
+import React, { useState, useEffect } from 'react';
 
-export default function Home() {
+
+const HomePage = () => {
+  const [currentSection, setCurrentSection] = useState('home');
+  const [bullets, setBullets] = useState<Bullet[]>([]);
+  const [nextBulletId, setNextBulletId] = useState(0);
+
+  // Bullet animation logic
+  useEffect(() => {
+    // Create new bullets
+    const bulletInterval = setInterval(() => {
+      setBullets(prev => {
+        const newBullet = {
+          id: nextBulletId,
+          position: -3, // Start off-screen
+          row: Math.floor(Math.random() * 50)
+        };
+        setNextBulletId(prev => prev + 1);
+        return [...prev, newBullet];
+      });
+    }, 5000); // New bullet every 2 seconds
+
+    // Move bullets
+    const moveInterval = setInterval(() => {
+      setBullets(prev => 
+        prev
+          .map(bullet => ({
+            ...bullet,
+            position: bullet.position + 1
+          }))
+          .filter(bullet => bullet.position < 100) // Remove bullets that are off-screen
+      );
+    }, 100); 
+
+    return () => {
+      clearInterval(bulletInterval);
+      clearInterval(moveInterval);
+    };
+  }, [nextBulletId]);
+
+  const handleArrowClick = (direction: string) => {
+    const sectionOrder = Object.keys(sections);
+    const currentIndex = sectionOrder.indexOf(currentSection);
+    let newIndex;
+    
+    switch(direction) {
+      case 'up':
+        newIndex = (currentIndex - 1 + sectionOrder.length) % sectionOrder.length;
+        break;
+      case 'down':
+        newIndex = (currentIndex + 1) % sectionOrder.length;
+        break;
+      case 'left':
+        newIndex = (currentIndex - 2 + sectionOrder.length) % sectionOrder.length;
+        break;
+      case 'right':
+        newIndex = (currentIndex + 2) % sectionOrder.length;
+        break;
+      default:
+        newIndex = currentIndex;
+    }
+    
+    setCurrentSection(sectionOrder[newIndex]);
+  };
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
+    <div className="fixed inset-0 overflow-hidden">
+      {/* Base grid container */}
+      <div className="w-full h-full">
+        {/* Bullets container */}
+        <div className="absolute inset-0">
+          {bullets.map(bullet => (
+            <GridBullet 
+              key={bullet.id}
+              position={bullet.position}
+              row={bullet.row}
             />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+          ))}
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+
+        {/* Center content */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
+          <FilledRectangle width={20} height={20} />
+          
+          {/* Content overlay */}
+          <div className="absolute inset-0 flex items-center justify-center text-white p-4">
+            <div className="text-center">
+              <h2 className="text-xl mb-4">{sections[currentSection].title}</h2>
+              {currentSection === 'home' ? (
+                <div className="flex flex-col gap-2">
+                  {sections[currentSection].links.map(link => (
+                    <button key={link} className="text-white hover:text-gray-300">
+                      {link}
+                    </button>
+                  ))}
+                </div>
+              ) : (
+                <p>{sections[currentSection].content}</p>
+              )}
+            </div>
+          </div>
+
+          {/* Navigation arrows */}
+          <div className="absolute -top-32 left-1/2 -translate-x-1/2 cursor-pointer">
+            <GridSection pattern={arrowPatterns.up} onClick={() => handleArrowClick('up')} onlyBlackClickable={false} />
+          </div>
+          <div className="absolute -bottom-32 left-1/2 -translate-x-1/2 cursor-pointer">
+            <GridSection pattern={arrowPatterns.down} onClick={() => handleArrowClick('down')} onlyBlackClickable={false} />
+          </div>
+          <div className="absolute -left-32 top-1/2 -translate-y-1/2 cursor-pointer">
+            <GridSection pattern={arrowPatterns.left} onClick={() => handleArrowClick('left')} onlyBlackClickable={false} />
+          </div>
+          <div className="absolute -right-32 top-1/2 -translate-y-1/2 cursor-pointer">
+            <GridSection pattern={arrowPatterns.right} onClick={() => handleArrowClick('right')} onlyBlackClickable={false} />
+          </div>
+        </div>
+      </div>
     </div>
   );
-}
+};
+export default HomePage;
