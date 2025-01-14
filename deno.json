@@ -1,4 +1,3 @@
 {
-    "unstable": ["unsafe-proto"]
-  }
-  
+  "unstable": ["unsafe-proto"]
+}

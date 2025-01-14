@@ -8,15 +8,6 @@ export default {
   ],
   theme: {
     extend: {
-      colors: {
-        black: {
-          DEFAULT: "#000",
-          100: "#00319",
-        },
-        grid_border: {
-          DEFAULT: "#e5e5e5",
-        }
-      },
     },
   },
   plugins: [],
