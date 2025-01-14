@@ -1,35 +1,31 @@
 const arrowPatterns = {
+    right: [
+        [1,0,0],
+        [0,1,0],
+        [0,0,1],
+        [0,1,0],
+        [1,0,0]
+    ],
+    left: [
+        [0,0,1],
+        [0,1,0],
+        [1,0,0],
+        [0,1,0],
+        [0,0,1]
+    ],
     up: [
         [0,0,1,0,0],
         [0,1,0,1,0],
-        [1,0,0,0,1],
-        [0,0,0,0,0],
-        [0,0,0,0,0]
+        [1,0,0,0,1]
     ],
     down: [
-        [0,0,0,0,0],
-        [0,0,0,0,0],
         [1,0,0,0,1],
         [0,1,0,1,0],
         [0,0,1,0,0]
-    ],
-    left: [
-        [0,0,1,0,0],
-        [0,1,0,0,0],
-        [1,0,0,0,0],
-        [0,1,0,0,0],
-        [0,0,1,0,0]
-    ],
-    right: [
-        [0,0,1,0,0],
-        [0,0,0,1,0],
-        [0,0,0,0,1],
-        [0,0,0,1,0],
-        [0,0,1,0,0]
     ]
-
 };
 const gridSize = 6;
+const gridSizePx = 24;
 // Main content sections
 const sections = {
     home: { title: "Navigation", links: ["Profile", "Projects", "Contact", "Blog"] },
@@ -38,5 +34,5 @@ const sections = {
     contact: { title: "Contact", content: "Get in touch" },
     blog: { title: "Blog", content: "Read my thoughts" }
   };
-export {arrowPatterns, sections};
+export {arrowPatterns, sections,gridSize,gridSizePx};
   
