@@ -1,26 +1,38 @@
 import { gridSize } from "@/data/Data";
 const GridBox = (
-  { isBlack = false, onClick, blackColor = "bg-black" }: {
+  {
+    isBlack = false,
+    onClick,
+    blackColor = "bg-black",
+    whiteColor = "bg-transparent",
+  }: {
     isBlack?: boolean;
     onClick?: () => void;
     blackColor?: string;
+    whiteColor?: string;
   },
 ) => (
   // if there is onClick, then it becomes clickable
   <div
     className={`w-${gridSize} h-${gridSize} ${
-      isBlack ? blackColor : "bg-transparent"
+      isBlack ? blackColor : whiteColor
     }`}
     onClick={onClick}
-    style={{ cursor: onClick ? "pointer" : "default" ,height: "24px", width: "24px"}}
+    style={{
+      cursor: onClick ? "pointer" : "default",
+      height: "24px",
+      width: "24px",
+    }}
   />
 );
 
+interface BulletType {
+  position: { top: number; left: number };
+  direction: string;
+}
+
 const Bullet = (
-  { position, direction }: {
-    position: { top: number; left: number };
-    direction: string;
-  },
+  { position, direction }: BulletType,
 ) => {
   const pattern = (direction === "left" || direction === "right")
     ? [[1, 1, 1]]
@@ -40,11 +52,13 @@ const GridSection = (
     onClick = () => {},
     onlyBlackClickable = true,
     blackColor = "bg-black",
+    whiteColor = "bg-transparent",
   }: {
     pattern: number[][];
     onClick?: () => void;
     onlyBlackClickable?: boolean;
     blackColor?: string;
+    whiteColor?: string;
   },
 ) => {
   return (
@@ -59,6 +73,7 @@ const GridSection = (
                 ? (cell === 1 ? onClick : undefined)
                 : onClick}
               blackColor={blackColor}
+              whiteColor={whiteColor}
             />
           ))}
         </div>
@@ -77,6 +92,29 @@ const FilledRectangle = (
   const pattern = Array(height).fill(1).map(() => Array(width).fill(1));
   return <GridSection pattern={pattern} onClick={onClick} />;
 };
+const BorderRectangle = (
+  {
+    width = 20,
+    height = 20,
+    onClick = () => {},
+    whiteColor = "bg-transparent",
+  }: {
+    width?: number;
+    height?: number;
+    onClick?: () => void;
+    whiteColor?: string;
+  },
+) => {
+  const pattern = Array(height).fill(1).map((row, i) => (
+    Array(width).fill(1).map((cell, j) => (
+      i === 0 || i === height - 1 || j === 0 || j === width - 1 ? 1 : 0
+    ))
+  ));
+  return (
+    <GridSection pattern={pattern} onClick={onClick} whiteColor={whiteColor} />
+  );
+};
 
 // Export the components
-export { Bullet, FilledRectangle, GridBox, GridSection };
+export { BorderRectangle, Bullet, FilledRectangle, GridBox, GridSection };
+export type { BulletType };
