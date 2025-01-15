@@ -1,34 +1,66 @@
+import { addScore, LeaderboardEntry } from "@/app/utils/Leaderboard";
 import React, { useEffect, useState } from "react";
 
 const Scoreboard = (
-  { isGameOver, onRestart }: { isGameOver: Boolean; onRestart: () => void },
+  { isGameOver, onRestart, leaderboard, score }: {
+    isGameOver: Boolean;
+    onRestart: () => void;
+    leaderboard: LeaderboardEntry[];
+    score: number;
+  },
 ) => {
-  const [score, setScore] = useState(0);
-  const handleRestart = () => {
-    setScore(0);
-    onRestart();
-  };
-  useEffect(() => {
-    if (!isGameOver) {
-      const interval = setInterval(() => {
-        setScore((prevScore) => prevScore + 1);
-      }, 100);
+  const [playerName, setPlayerName] = useState("");
 
-      return () => clearInterval(interval);
+  // Save score to Firebase when game is over and name is provided
+  const handleSaveScore = async () => {
+    if (playerName.trim() && isGameOver) {
+      await addScore(playerName, score);
+      setPlayerName("");
     }
-  }, [isGameOver]);
-
+  };
   return (
-    <div className="fixed top-4 right-4 bg-gray-400 p-4 ">
+    <div className="fixed top-4 right-4 bg-black text-white p-4">
       <h2 className="text-xl font-bold">Score: {score}</h2>
+      {(isGameOver && score > leaderboard[2].score) && (
+        <div className="mt-4">
+          <input
+            type="text"
+            placeholder="Enter your name"
+            value={playerName}
+            onChange={(e) => setPlayerName(e.target.value)}
+            className="w-full p-2 bg-gray-700 text-white mb-2"
+          />
+          <button
+            onClick={handleSaveScore}
+            className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4"
+          >
+            Save Score
+          </button>
+        </div>
+      )}
       {isGameOver && (
         <button
-          className="mt-4 bg-white text-black px-4 py-2"
-          onClick={handleRestart}
+          onClick={onRestart}
+          className="w-full mt-2 bg-gray-400 hover:bg-gray-600 text-white font-bold py-2 px-4"
         >
           Restart
         </button>
       )}
+
+      <div className="mt-6">
+        <h3 className="text-lg font-semibold mb-2">Leaderboard</h3>
+        <div className="flex-col gap-2">
+          {/* get the top 4 entries */}
+          {leaderboard.slice(0, 4).map((entry, index) => (
+            <div
+              key={index}
+              className="p-2 bg-gray-700"
+            >
+              <span className="font-bold">{entry.score}</span>: {entry.name}
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 };

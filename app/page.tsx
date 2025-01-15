@@ -6,44 +6,46 @@ import {
   GridSection,
 } from "@/components/GridComponents";
 import Scoreboard from "@/components/ScoreBoard";
-import {
-  arrowPatterns,
-  bulletCombinations,
-  gridSizePx,
-  sections,
-} from "@/data/Data";
+import { arrowPatterns, bulletCombinations, gridSizePx } from "@/data/Data";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
+import {
+  LeaderboardEntry,
+  subscribeToLeaderboard,
+} from "@/app/utils/Leaderboard";
+import MiddleSection from "@/components/MiddleBox";
 
 const HomePage = () => {
   const [currentSection, setCurrentSection] = useState("home");
   const [isGameOver, setIsGameOver] = useState(false);
   const [boxPosition, setBoxPosition] = useState({ top: 0, left: 0 });
+  const [score, setScore] = useState(0);
+  const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([]);
 
   const [bullets, setBullets] = useState<BulletType[]>([]);
   const handleArrowClick = (direction: string) => {
-    const sectionOrder = Object.keys(sections);
-    const currentIndex = sectionOrder.indexOf(currentSection);
+    const sections = ["home", "projects", "contact", "profile"];
+    const currentIndex = sections.indexOf(currentSection);
     let newIndex;
     switch (direction) {
       case "up":
-        newIndex = (currentIndex - 1 + sectionOrder.length) %
-          sectionOrder.length;
+        newIndex = (currentIndex - 1 + sections.length) %
+          sections.length;
         break;
       case "down":
-        newIndex = (currentIndex + 1) % sectionOrder.length;
+        newIndex = (currentIndex + 1) % sections.length;
         break;
       case "left":
-        newIndex = (currentIndex - 2 + sectionOrder.length) %
-          sectionOrder.length;
+        newIndex = (currentIndex - 2 + sections.length) %
+          sections.length;
         break;
       case "right":
-        newIndex = (currentIndex + 2) % sectionOrder.length;
+        newIndex = (currentIndex + 2) % sections.length;
         break;
       default:
         newIndex = currentIndex;
     }
-    setCurrentSection(sectionOrder[newIndex]);
+    setCurrentSection(sections[newIndex]);
   };
   const handleKeyDown = (event: KeyboardEvent) => {
     if (isGameOver) {
@@ -71,10 +73,16 @@ const HomePage = () => {
     setBoxPosition({ top: 0, left: 0 });
   };
   const handleRestart = () => {
+    setScore(0);
     setBullets([]);
     setBoxPosition({ top: 0, left: 0 });
     setIsGameOver(false);
   };
+
+  useEffect(() => {
+    const unsubscribe = subscribeToLeaderboard(setLeaderboard);
+    return () => unsubscribe();
+  }, []);
 
   useEffect(() => {
     // Add bullet from the combinations
@@ -165,6 +173,18 @@ const HomePage = () => {
       window.removeEventListener("keyup", handleKeyUp);
     };
   }, []);
+
+  // Increment score while the game is running
+  useEffect(() => {
+    if (!isGameOver) {
+      const interval = setInterval(() => {
+        setScore((prevScore) => prevScore + 1);
+      }, 100);
+
+      return () => clearInterval(interval);
+    }
+  }, [isGameOver]);
+
   return (
     <div className="fixed inset-0 overflow-hidden">
       {/* Base grid container */}
@@ -177,10 +197,17 @@ const HomePage = () => {
             direction={bullet.direction}
           />
         ))}
-        {/* scoreboard in right side */}
-        <div className="absolute top-4 right-4">
-          <Scoreboard isGameOver={isGameOver} onRestart={handleRestart} />
-        </div>
+        {/* Render scoreboard only if there is enough space */}
+        {window.innerWidth > 1000 && (
+          <div className="absolute top-4 right-4">
+            <Scoreboard
+              isGameOver={isGameOver}
+              onRestart={handleRestart}
+              leaderboard={leaderboard}
+              score={score}
+            />
+          </div>
+        )}
         {/* Center content */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
           <div
@@ -192,31 +219,10 @@ const HomePage = () => {
             <FilledRectangle width={20} height={20} />
 
             {/* Content overlay */}
-            <div className="absolute inset-0 flex items-center justify-center text-white p-4">
-              <div className="text-center">
-                <h2 className="text-xl mb-4">
-                  {sections[currentSection].title}
-                </h2>
-                {currentSection === "home"
-                  ? (
-                    <div className="flex flex-col gap-2">
-                      {sections[currentSection].links?.map((link) => (
-                        <Link
-                          key={link}
-                          href={`${link.toLowerCase()}`}
-                          className="text-white hover:text-gray-300"
-                        >
-                          {link}
-                        </Link>
-                      ))}
-                    </div>
-                  )
-                  : <p>{sections[currentSection].content}</p>}
-              </div>
-            </div>
+            <MiddleSection currentSection={currentSection} />
           </div>
           {/* Navigation arrows */}
-          <div className="absolute -top-32 left-1/2 -translate-x-1/2 cursor-pointer">
+          <div className="absolute -top-32 left-1/2 -translate-x-1/2 cursor-pointer -z-10">
             <GridSection
               pattern={arrowPatterns.up}
               onClick={() => handleArrowClick("up")}
@@ -224,7 +230,7 @@ const HomePage = () => {
               blackColor="bg-gray-300"
             />
           </div>
-          <div className="absolute -bottom-32 left-1/2 -translate-x-1/2 cursor-pointer">
+          <div className="absolute -bottom-32 left-1/2 -translate-x-1/2 cursor-pointer -z-10">
             <GridSection
               pattern={arrowPatterns.down}
               onClick={() => handleArrowClick("down")}
@@ -232,7 +238,7 @@ const HomePage = () => {
               blackColor="bg-gray-300"
             />
           </div>
-          <div className="absolute -left-32 top-1/2 -translate-y-1/2 cursor-pointer">
+          <div className="absolute -left-32 top-1/2 -translate-y-1/2 cursor-pointer -z-10">
             <GridSection
               pattern={arrowPatterns.left}
               onClick={() => handleArrowClick("left")}
@@ -240,7 +246,7 @@ const HomePage = () => {
               blackColor="bg-gray-300"
             />
           </div>
-          <div className="absolute -right-32 top-1/2 -translate-y-1/2 cursor-pointer">
+          <div className="absolute -right-32 top-1/2 -translate-y-1/2 cursor-pointer -z-10">
             <GridSection
               pattern={arrowPatterns.right}
               onClick={() => handleArrowClick("right")}

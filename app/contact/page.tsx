@@ -1,7 +1,11 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { BorderRectangle, Bullet, BulletType } from "@/components/GridComponents";
+import {
+  BorderRectangle,
+  Bullet,
+  BulletType,
+} from "@/components/GridComponents";
 import { gridSizePx } from "@/data/Data";
 import Link from "next/link";
 import { Space_Mono } from "next/font/google";
@@ -19,18 +23,16 @@ const ContactPage = () => {
         ...prevBullets,
         {
           position: {
-            top:
-              randomDirection === "bottom"
-                ? -gridSizePx * 4
-                : randomDirection === "top"
-                ? window.innerHeight + gridSizePx * 4
-                : Math.random() * window.innerHeight,
-            left:
-              randomDirection === "right"
-                ? -gridSizePx * 4
-                : randomDirection === "left"
-                ? window.innerWidth + gridSizePx * 4
-                : Math.random() * window.innerWidth,
+            top: randomDirection === "bottom"
+              ? -gridSizePx * 4
+              : randomDirection === "top"
+              ? window.innerHeight + gridSizePx * 4
+              : Math.random() * window.innerHeight,
+            left: randomDirection === "right"
+              ? -gridSizePx * 4
+              : randomDirection === "left"
+              ? window.innerWidth + gridSizePx * 4
+              : Math.random() * window.innerWidth,
           },
           direction: randomDirection,
         },
@@ -51,18 +53,16 @@ const ContactPage = () => {
           .map((bullet) => ({
             ...bullet,
             position: {
-              top:
-                bullet.direction === "bottom"
-                  ? bullet.position.top + verticalSpeed
-                  : bullet.direction === "top"
-                  ? bullet.position.top - verticalSpeed
-                  : bullet.position.top,
-              left:
-                bullet.direction === "right"
-                  ? bullet.position.left + horizontalSpeed
-                  : bullet.direction === "left"
-                  ? bullet.position.left - horizontalSpeed
-                  : bullet.position.left,
+              top: bullet.direction === "bottom"
+                ? bullet.position.top + verticalSpeed
+                : bullet.direction === "top"
+                ? bullet.position.top - verticalSpeed
+                : bullet.position.top,
+              left: bullet.direction === "right"
+                ? bullet.position.left + horizontalSpeed
+                : bullet.direction === "left"
+                ? bullet.position.left - horizontalSpeed
+                : bullet.position.left,
             },
           }))
           .filter(
@@ -70,7 +70,7 @@ const ContactPage = () => {
               bullet.position.top > -gridSizePx * 4 &&
               bullet.position.top < window.innerHeight + gridSizePx * 4 &&
               bullet.position.left > -gridSizePx * 4 &&
-              bullet.position.left < window.innerWidth + gridSizePx * 4
+              bullet.position.left < window.innerWidth + gridSizePx * 4,
           )
       );
     }, 100);
@@ -84,7 +84,11 @@ const ContactPage = () => {
       <div className="w-full h-full">
         {/* Bullets */}
         {bullets.map((bullet, index) => (
-          <Bullet key={index} position={bullet.position} direction={bullet.direction} />
+          <Bullet
+            key={index}
+            position={bullet.position}
+            direction={bullet.direction}
+          />
         ))}
 
         {/* Contact content */}
@@ -94,45 +98,56 @@ const ContactPage = () => {
             <div className="text-center w-3/4">
               <h2 className="text-xl mb-4">Contact Me</h2>
               <p className="mb-2">
-                If you really need to contact me for some reason, you can try the &nbsp;
+                If you really need to contact me for some reason, you can try
+                the &nbsp;
                 <Link
                   href="https://www.linkedin.com/in/your-profile"
                   target="_blank"
                   className="text-blue-500 hover:underline"
                 >
-                  LinkedIn 
+                  LinkedIn
                 </Link>
-                &nbsp;
-                I guess. I'm not really a fan of the platform, but it's there. I'm way more active in facebook for better or worse.
-                In fact, why not just try  &nbsp; <Link
+                &nbsp; I guess. I'm not really a fan of the platform, but it's
+                there. I'm way more active on facebook for better or worse. In
+                fact, why not just try &nbsp;{" "}
+                <Link
                   href="https://www.facebook.com/kasun.prabashwara.100/"
                   target="_blank"
                   className="text-blue-800 hover:underline"
                 >
                   that
-                </Link> &nbsp;instead? And sending me an &nbsp; <a
+                </Link>{" "}
+                &nbsp;instead? And sending me an &nbsp;{" "}
+                <a
                   href="mailto:kasun.20@cse.mrt.ac.lk"
                   className="text-red-500 hover:underline"
                 >
                   email
-                </a>&nbsp; would also work. Although it lacks the charm of sending a mail by post.
-                And I'm also on &nbsp; <Link
+                </a>&nbsp; would also work. Although it lacks the charm of
+                sending a mail by post. And I'm also on &nbsp;{" "}
+                <Link
                   href="https://github.com/your-username"
                   target="_blank"
                   className="text-gray-800 hover:underline"
                 >
                   GitHub.
-                </Link> &nbsp; Like an average developer. Mostly there to drool over some of my favorite project repos and reading the proposals in issues section. Or sometimes to look at some 
-                code for reference and writing my own based on that of course(duh).
+                </Link>{" "}
+                &nbsp; Like an average developer. Mostly there to drool over
+                some of my favorite project repos and reading the proposals in
+                issues section. Or sometimes to look at some code for reference
+                and writing my own based on that of course(duh).
               </p>
               <p className="mb-2">
-                
               </p>
               <p className="mt-6 italic text-gray-600">
                 Other ways to contact me:
               </p>
               <ul className="list-disc list-inside text-sm text-gray-500">
-                <li>I'm immortal so if you are immortal too, then you can try to walk in random directions and hope to bump into me. It's a canon event :) </li>
+                <li>
+                  I'm immortal so if you are immortal too, then you can try to
+                  walk in random directions and hope to bump into me. It's a
+                  canon event :)
+                </li>
                 <li>Be a nice person. I'm a sucker for nice people</li>
                 <li>Have you heard of telepathy?</li>
               </ul>

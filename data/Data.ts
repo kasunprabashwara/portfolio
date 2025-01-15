@@ -57,20 +57,7 @@ const arrowPatternsBig = {
 const gridSize = 6;
 const gridSizePx = 24;
 // Main content sections
-interface SectionType {
-  title: string;
-  content?: string;
-  links?: string[];
-}
-const sections: Record<string, SectionType> = {
-  home: {
-    title: "Navigation",
-    links: ["Profile", "Projects", "Contact"],
-  },
-  profile: { title: "Profile", content: "View my background" },
-  projects: { title: "Projects", content: "See my work" },
-  contact: { title: "Contact", content: "Get in touch" },
-};
+
 const bulletCombinations: BulletType[][] = [
   [{
     position: {
@@ -187,6 +174,4 @@ export {
   bulletCombinations,
   gridSize,
   gridSizePx,
-  sections,
 };
-export type { SectionType };
