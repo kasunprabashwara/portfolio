@@ -1,14 +1,19 @@
 "use client";
 
-import React, { useState } from "react";
-import { BorderRectangle, GridSection } from "@/components/GridComponents";
-import { arrowPatternsBig } from "@/data/Data"; // Add your arrow patterns here
+import React, { useState, useEffect } from "react";
+import { BorderRectangle, GridBox, GridSection } from "@/components/GridComponents";
+import { arrowPatternsBig } from "@/data/Data";
 
 const ProjectsPage = () => {
   const [currentProjectIndex, setCurrentProjectIndex] = useState(0);
-  const numberOfProjects = 6;
+  const numberOfProjects = 6; // Includes Game of Life as the 6th "project"
+  const gridSize = 15;
+  const [grid, setGrid] = useState(
+    Array(gridSize).fill(null).map(() => Array(gridSize).fill(0))
+  );
+  const [isSimulating, setIsSimulating] = useState(false);
 
-  const handleArrowClick = (direction: "left" | "right") => {
+  const handleArrowClick = (direction: string) => {
     if (direction === "left") {
       setCurrentProjectIndex((prevIndex) =>
         prevIndex === 0 ? numberOfProjects - 1 : prevIndex - 1
@@ -20,9 +25,94 @@ const ProjectsPage = () => {
     }
   };
 
+  const toggleCell = (row: number, col: number) => {
+    const newGrid = grid.map((r, i) =>
+      r.map((cell, j) => (i === row && j === col ? 1 - cell : cell))
+    );
+    setGrid(newGrid);
+  };
+
+  const getNextGeneration = (grid: any[][]) => {
+    const directions = [
+      [-1, -1], [-1, 0], [-1, 1],
+      [0, -1],         [0, 1],
+      [1, -1], [1, 0], [1, 1],
+    ];
+
+    return grid.map((row: any[], i: number) =>
+      row.map((cell, j) => {
+        const liveNeighbors = directions.reduce((count, [dx, dy]) => {
+          const x = i + dx;
+          const y = j + dy;
+          if (x >= 0 && x < gridSize && y >= 0 && y < gridSize) {
+            count += grid[x][y];
+          }
+          return count;
+        }, 0);
+
+        if (cell === 1 && (liveNeighbors === 2 || liveNeighbors === 3)) {
+          return 1;
+        } else if (cell === 0 && liveNeighbors === 3) {
+          return 1;
+        } else {
+          return 0;
+        }
+      })
+    );
+  };
+
+  useEffect(() => {
+    if (isSimulating) {
+      const interval = setInterval(() => {
+        setGrid((prevGrid) => getNextGeneration(prevGrid));
+      }, 500);
+
+      return () => clearInterval(interval);
+    }
+  }, [isSimulating]);
+
+  if (isSimulating) {
+    return (
+      <div className="fixed inset-0 overflow-hidden flex items-center justify-center">
+        <div>
+          {grid.map((row, i) => (
+            <div key={i} style={{ display: "flex" }}>
+              {row.map((cell, j) => (
+                <GridBox
+                  key={`${i}-${j}`}
+                  isBlack={cell === 1}
+                  onClick={() => toggleCell(i, j)}
+                />
+              ))}
+            </div>
+          ))}
+        </div>
+        <div className="absolute bottom-10 space-x-4">
+          <button
+            onClick={() => setIsSimulating((prev) => !prev)}
+            className="px-4 py-2 bg-black text-white border border-white"
+          >
+            {isSimulating ? "Pause" : "Play"}
+          </button>
+          <button
+            onClick={() =>
+              setGrid(
+                Array(gridSize).fill(0).map(() =>
+                  Array(gridSize).fill(0)
+                )
+              )
+            }
+            className="px-4 py-2 bg-black text-white border border-white"
+          >
+            Reset
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="fixed inset-0 overflow-hidden">
-      {/* Base container */}
       <div className="w-full h-full">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
           <div className="absolute -left-40 top-1/2 -translate-y-1/2 cursor-pointer">
@@ -33,6 +123,7 @@ const ProjectsPage = () => {
               blackColor="bg-black"
             />
           </div>
+
           <div className="absolute -right-40 top-1/2 -translate-y-1/2">
             <GridSection
               pattern={arrowPatternsBig.right}
@@ -41,13 +132,13 @@ const ProjectsPage = () => {
               blackColor="bg-black"
             />
           </div>
-          {/* Project content */}
+
           <div className="relative">
             <BorderRectangle width={40} height={30} whiteColor="bg-white" />
+
             <div className="absolute inset-0 flex items-center justify-center text-black p-4">
               <div className="text-center w-4/5 h-6/7">
                 <div className="text-left space-y-8">
-                  {/* Final Year Project */}
                   {currentProjectIndex === 0 && (
                     <div className="flex flex-col md:flex-row items-center md:items-start gap-8">
                       <div className="w-full md:w-1/2">
@@ -262,6 +353,56 @@ const ProjectsPage = () => {
                       </div>
                     </div>
                   )}
+                  {currentProjectIndex === 5 && (
+  <div className="w-full h-full flex flex-col items-center justify-center">
+    <h3 className="text-2xl font-bold mb-4 text-center">
+      Nice, you have seen all the projects here.
+    </h3>
+    <p className="mb-4 text-center">
+      Wanna play some Game of Life while you rest? Did you know the Game of Life is Turing complete? So in theory, you can do whatever you want (probably no bringing back dead people though).
+    </p>
+    <p className="mb-4 text-center">
+      Click below to set the starting position and click play.
+    </p>
+
+    <div className="w-full flex justify-center mb-4">
+    <div className="border border-gray-500">
+        {grid.map((row, i) => (
+          <div key={i} style={{ display: "flex" }}>
+            {row.map((cell, j) => (
+              <GridBox
+                key={`${i}-${j}`}
+                isBlack={cell === 1}
+                onClick={() => toggleCell(i, j)}
+              />
+            ))}
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <div className="space-x-4 flex justify-center">
+      <button
+        onClick={() => setIsSimulating((prev) => !prev)}
+        className="px-4 py-2 bg-black text-white border border-white"
+      >
+        {isSimulating ? "Pause" : "Play"}
+      </button>
+      <button
+        onClick={() =>
+          setGrid(
+            Array(gridSize).fill(0).map(() =>
+              Array(gridSize).fill(0)
+            )
+          )
+        }
+        className="px-4 py-2 bg-black text-white border border-white"
+      >
+        Reset
+      </button>
+    </div>
+  </div>
+)}
                 </div>
               </div>
             </div>
