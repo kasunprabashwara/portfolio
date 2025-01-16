@@ -82,6 +82,9 @@ const ContactPage = () => {
     <div className="fixed inset-0 overflow-hidden">
       {/* Base grid container */}
       <div className="w-full h-full">
+      <Link href="/" className="absolute top-4 left-4 px-4 py-2 bg-black text-white border border-white z-20">
+        Back
+      </Link>
         {/* Bullets */}
         {bullets.map((bullet, index) => (
           <Bullet

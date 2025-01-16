@@ -7,8 +7,7 @@ import {
 } from "@/components/GridComponents";
 import Scoreboard from "@/components/ScoreBoard";
 import { arrowPatterns, bulletCombinations, gridSizePx } from "@/data/Data";
-import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   LeaderboardEntry,
   subscribeToLeaderboard,
@@ -21,8 +20,13 @@ const HomePage = () => {
   const [boxPosition, setBoxPosition] = useState({ top: 0, left: 0 });
   const [score, setScore] = useState(0);
   const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([]);
-
+  
   const [bullets, setBullets] = useState<BulletType[]>([]);
+  const bulletsRef = useRef(bullets); // Create a ref to track bullets
+  const speedMultiplierRef = useRef(1); // To track bullet speed multiplier
+
+  const levelThresholds = [100, 250 ,500,1000, 2000, 3000, 5000, 10000,15000,20000]; // Level-up thresholds
+
   const handleArrowClick = (direction: string) => {
     const sections = ["home", "projects", "contact", "profile"];
     const currentIndex = sections.indexOf(currentSection);
@@ -85,55 +89,76 @@ const HomePage = () => {
   }, []);
 
   useEffect(() => {
+    bulletsRef.current = bullets; // Sync ref with state
+  }, [bullets]);
+
+    // Update speed multiplier based on score
+    useEffect(() => {
+      const currentLevel = levelThresholds.findIndex((threshold) => score < threshold) + 1 || 10;
+      if(
+        speedMultiplierRef.current !== currentLevel
+      ){speedMultiplierRef.current = currentLevel} 
+    }, [score]);
+  
+    useEffect(() => {
+      const interval = setInterval(() => {
+        if (isGameOver) {
+          return;
+        }
+  
+        const horizontalSpeed =
+          ((window.innerWidth - gridSizePx * 20) / 1000) * speedMultiplierRef.current;
+        const verticalSpeed =
+          ((window.innerHeight - gridSizePx * 20) / 1000) * speedMultiplierRef.current;
+  
+        setBullets((prevBullets) =>
+          prevBullets
+            .map((bullet) => ({
+              ...bullet,
+              position: {
+                top:
+                  bullet.direction === "bottom"
+                    ? bullet.position.top + gridSizePx * verticalSpeed
+                    : bullet.direction === "top"
+                    ? bullet.position.top - gridSizePx * verticalSpeed
+                    : bullet.position.top,
+                left:
+                  bullet.direction === "right"
+                    ? bullet.position.left + gridSizePx * horizontalSpeed
+                    : bullet.direction === "left"
+                    ? bullet.position.left - gridSizePx * horizontalSpeed
+                    : bullet.position.left,
+              },
+            }))
+            .filter(
+              (bullet) =>
+                bullet.position.top > -gridSizePx * 4 &&
+                bullet.position.top < window.innerHeight + gridSizePx * 4 &&
+                bullet.position.left > -gridSizePx * 4 &&
+                bullet.position.left < window.innerWidth + gridSizePx * 4,
+            ),
+        );
+      }, 100);
+  
+      return () => clearInterval(interval);
+    }, [isGameOver]);
+  useEffect(() => {
     // Add bullet from the combinations
     const interval = setInterval(() => {
-      if (isGameOver) {
+      if (isGameOver || bulletsRef.current.length > 0) {
         return;
       }
       const randomIndex = Math.floor(Math.random() * bulletCombinations.length);
-      setBullets((
-        prevBullets,
-      ) => [...prevBullets, ...bulletCombinations[randomIndex]]);
+      setBullets((prevBullets) => [
+        ...prevBullets,
+        ...bulletCombinations[randomIndex],
+      ]);
     }, 2000);
+
     return () => clearInterval(interval);
   }, [isGameOver]);
-  // Move bullets and detect collision
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (isGameOver) {
-        return;
-      }
-      const horizontalSpeed = (window.innerWidth - gridSizePx * 20) / 1000;
-      const verticalSpeed = (window.innerHeight - gridSizePx * 20) / 1000;
-      setBullets((prevBullets) =>
-        prevBullets
-          .map((bullet) => ({
-            ...bullet,
-            position: {
-              top: bullet.direction === "bottom"
-                ? bullet.position.top + gridSizePx * verticalSpeed
-                : bullet.direction === "top"
-                ? bullet.position.top - gridSizePx * verticalSpeed
-                : bullet.position.top,
-              left: bullet.direction === "right"
-                ? bullet.position.left + gridSizePx * horizontalSpeed
-                : bullet.direction === "left"
-                ? bullet.position.left - gridSizePx * horizontalSpeed
-                : bullet.position.left,
-            },
-          }))
-          .filter(
-            (bullet) =>
-              bullet.position.top > -gridSizePx * 4 &&
-              bullet.position.top < window.innerHeight + gridSizePx * 4 &&
-              bullet.position.left > -gridSizePx * 4 &&
-              bullet.position.left < window.innerWidth + gridSizePx * 4,
-          )
-      );
-    }, 100);
-    return () => clearInterval(interval);
-  }, [isGameOver]);
-  const detectCollision = (bullet: BulletType) => {
+
+  const detectCollision = (bullet:BulletType) => {
     const centerX = window.innerWidth / 2;
     const centerY = window.innerHeight / 2;
     const boxSize = 20 * gridSizePx; // Assuming box size is 20 grid units
@@ -161,10 +186,10 @@ const HomePage = () => {
       setIsGameOver(true);
     }
   };
+
   useEffect(() => {
     bullets.forEach(detectCollision);
   }, [bullets, boxPosition]);
-
   useEffect(() => {
     window.addEventListener("keydown", handleKeyDown);
     window.addEventListener("keyup", handleKeyUp);

@@ -2,7 +2,8 @@
 
 import React, { useState, useEffect } from "react";
 import { BorderRectangle, GridBox, GridSection } from "@/components/GridComponents";
-import { arrowPatternsBig } from "@/data/Data";
+import { arrowPatternsBig, gridSizePx } from "@/data/Data";
+import Link from "next/link";
 
 const ProjectsPage = () => {
   const [currentProjectIndex, setCurrentProjectIndex] = useState(0);
@@ -11,17 +12,26 @@ const ProjectsPage = () => {
   const [grid, setGrid] = useState(
     Array(gridSize).fill(null).map(() => Array(gridSize).fill(0))
   );
+  const [largeGrid, setLargeGrid] = useState(
+    Array(gridSize).fill(null).map(() => Array(gridSize).fill(0))
+  );
   const [isSimulating, setIsSimulating] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
+  const [seenProjects, setSeenProjects] = useState<number[]>([0]);
 
   const handleArrowClick = (direction: string) => {
+    const seenAll = seenProjects.length >= numberOfProjects-1;
     if (direction === "left") {
       setCurrentProjectIndex((prevIndex) =>
-        prevIndex === 0 ? numberOfProjects - 1 : prevIndex - 1
+        prevIndex === 0 ? seenAll ? 5 : numberOfProjects - 2 : prevIndex - 1
       );
     } else {
       setCurrentProjectIndex((prevIndex) =>
-        prevIndex === numberOfProjects - 1 ? 0 : prevIndex + 1
+        prevIndex === (seenAll ? 5 : numberOfProjects - 2) ? 0 : prevIndex + 1
       );
+    }
+    if (!seenProjects.includes(currentProjectIndex)) {
+      setSeenProjects((prev) => [...prev, currentProjectIndex]);
     }
   };
 
@@ -33,18 +43,19 @@ const ProjectsPage = () => {
   };
 
   const getNextGeneration = (grid: any[][]) => {
+    const gridWidth = grid.length;
+    const gridHight = grid[0].length;
     const directions = [
       [-1, -1], [-1, 0], [-1, 1],
       [0, -1],         [0, 1],
       [1, -1], [1, 0], [1, 1],
     ];
-
-    return grid.map((row: any[], i: number) =>
+    const result= grid.map((row: any[], i: number) =>
       row.map((cell, j) => {
         const liveNeighbors = directions.reduce((count, [dx, dy]) => {
           const x = i + dx;
           const y = j + dy;
-          if (x >= 0 && x < gridSize && y >= 0 && y < gridSize) {
+          if (x >= 0 && x < gridWidth && y >= 0 && y < gridHight) {
             count += grid[x][y];
           }
           return count;
@@ -59,23 +70,54 @@ const ProjectsPage = () => {
         }
       })
     );
+    return result;
   };
+  const handlePlay = () => {
+    const rows = Math.floor(window.innerHeight / gridSizePx);
+    const cols = Math.floor(window.innerWidth / gridSizePx);
+  
+    // Create a larger grid filled with 0
+    const largeGrid = Array(rows)
+      .fill(0)
+      .map(() => Array(cols).fill(0));
+  
+    // Place the 15x15 user grid in the center of the large grid
+    const userGridSize = 15;
+    const startRow = Math.floor((rows - userGridSize) / 2);
+    const startCol = Math.floor((cols - userGridSize) / 2);
+  
+    // Merge user grid into the large grid
+    grid.forEach((row, i) => {
+      row.forEach((cell, j) => {
+        largeGrid[startRow + i][startCol + j] = cell;
+      });
+    });
 
+    setLargeGrid(largeGrid);
+    setIsSimulating(true);
+  }
   useEffect(() => {
-    if (isSimulating) {
-      const interval = setInterval(() => {
-        setGrid((prevGrid) => getNextGeneration(prevGrid));
+    const interval = setInterval(() => {
+      if (!isPaused && isSimulating)
+        {setLargeGrid((prevGrid) => getNextGeneration(prevGrid));}
       }, 500);
 
       return () => clearInterval(interval);
-    }
-  }, [isSimulating]);
+
+  }, [isSimulating,isPaused]);
 
   if (isSimulating) {
+    
     return (
       <div className="fixed inset-0 overflow-hidden flex items-center justify-center">
+        <Link
+          href="/"
+          className="absolute top-4 left-4 px-4 py-2 bg-black text-white border border-white"
+        >
+          Back
+        </Link>
         <div>
-          {grid.map((row, i) => (
+          {largeGrid.map((row, i) => (
             <div key={i} style={{ display: "flex" }}>
               {row.map((cell, j) => (
                 <GridBox
@@ -89,18 +131,16 @@ const ProjectsPage = () => {
         </div>
         <div className="absolute bottom-10 space-x-4">
           <button
-            onClick={() => setIsSimulating((prev) => !prev)}
+            onClick={() => setIsPaused((prev) => !prev)}
             className="px-4 py-2 bg-black text-white border border-white"
           >
-            {isSimulating ? "Pause" : "Play"}
+            {isPaused ? "Play" : "Pause"}
           </button>
           <button
-            onClick={() =>
-              setGrid(
-                Array(gridSize).fill(0).map(() =>
-                  Array(gridSize).fill(0)
-                )
-              )
+            onClick={() =>{
+              setIsSimulating(false)
+              setIsPaused(false)
+            }
             }
             className="px-4 py-2 bg-black text-white border border-white"
           >
@@ -114,6 +154,9 @@ const ProjectsPage = () => {
   return (
     <div className="fixed inset-0 overflow-hidden">
       <div className="w-full h-full">
+      <Link href="/" className="absolute top-4 left-4 px-4 py-2 bg-black text-white border border-white">
+        Back
+      </Link>
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
           <div className="absolute -left-40 top-1/2 -translate-y-1/2 cursor-pointer">
             <GridSection
@@ -383,7 +426,7 @@ const ProjectsPage = () => {
 
     <div className="space-x-4 flex justify-center">
       <button
-        onClick={() => setIsSimulating((prev) => !prev)}
+        onClick={handlePlay}
         className="px-4 py-2 bg-black text-white border border-white"
       >
         {isSimulating ? "Pause" : "Play"}

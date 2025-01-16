@@ -80,6 +80,9 @@ const ProfilePage = () => {
 
   return (
     <div className="fixed inset-0 overflow-hidden">
+      <Link href="/" className="absolute top-4 left-4 px-4 py-2 bg-black text-white border border-white">
+        Back
+      </Link>
       {/* Base grid container */}
       <div className="w-full h-full">
         {/* Bullets */}
