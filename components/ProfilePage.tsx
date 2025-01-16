@@ -106,7 +106,7 @@ const ProfilePage = () => {
             <div className="text-center w-9/10 h-4/6">
               <h2 className=" text-7xl font-semibold mb-4">Welcome</h2>
               <Image
-                src="/kasun_prabashwara_image.jpg" // Replace with your image path
+                src="./kasun_prabashwara_image.jpg" // Replace with your image path
                 alt="Kasun Prabashwara"
                 width={200}
                 height={200}

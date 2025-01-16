@@ -164,7 +164,7 @@ const HomePage = () => {
         ...prevBullets,
         ...bulletCombinations[randomIndex],
       ]);
-    }, 2000);
+    }, 200);
 
     return () => clearInterval(interval);
   }, [isGameOver]);

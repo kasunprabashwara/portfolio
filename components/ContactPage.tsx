@@ -154,7 +154,7 @@ const ContactPage = () => {
                   canon event :)
                 </li>
                 <li>Be a nice person. I'm a sucker for nice people</li>
-                <li>Have you heard of telepathy?</li>
+                <li>Have you heard of telepathy? You have?? Damn</li>
               </ul>
             </div>
           </div>
