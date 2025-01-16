@@ -2,11 +2,12 @@ import { addScore, LeaderboardEntry } from "@/app/utils/Leaderboard";
 import React, { useState } from "react";
 
 const Scoreboard = (
-  { isGameOver, onRestart, leaderboard, score }: {
+  { isGameOver, onRestart, leaderboard, score, setScore }: {
     isGameOver: boolean;
     onRestart: () => void;
     leaderboard: LeaderboardEntry[];
     score: number;
+    setScore: (arg0: number) => void;
   },
 ) => {
   const [playerName, setPlayerName] = useState("");
@@ -16,6 +17,7 @@ const Scoreboard = (
     if (playerName.trim() && isGameOver) {
       await addScore(playerName, score);
       setPlayerName("");
+      setScore(0);
     }
   };
   return (

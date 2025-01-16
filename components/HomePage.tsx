@@ -240,6 +240,7 @@ const HomePage = () => {
               isGameOver={isGameOver}
               onRestart={handleRestart}
               leaderboard={leaderboard}
+              setScore={setScore}
               score={score}
             />
           </div>
