@@ -13,8 +13,8 @@ const MiddleSection = ({ currentSection }: MiddleBoxProps) => {
           <div className="flex flex-col gap-10">
             <h2 className="text-5xl">Yes this is my portfolio site</h2>
             <p className="text-xl">
-              Try to navigate to other sections somehow. I agree that this site might
-              not win any design of the year awards.
+              Try to navigate to other sections somehow. I agree that this site
+              might not win any design of the year awards.
             </p>
           </div>
         )}

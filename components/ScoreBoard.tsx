@@ -21,23 +21,24 @@ const Scoreboard = (
   return (
     <div className="fixed top-4 right-4 bg-black text-white p-4">
       <h2 className="text-xl font-bold">Score: {score}</h2>
-      {(isGameOver && leaderboard.length>2 && score > leaderboard[2].score) && (
-        <div className="mt-4">
-          <input
-            type="text"
-            placeholder="Enter your name"
-            value={playerName}
-            onChange={(e) => setPlayerName(e.target.value)}
-            className="w-full p-2 bg-gray-700 text-white mb-2"
-          />
-          <button
-            onClick={handleSaveScore}
-            className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4"
-          >
-            Save Score
-          </button>
-        </div>
-      )}
+      {(isGameOver && leaderboard.length > 2 && score > leaderboard[2].score) &&
+        (
+          <div className="mt-4">
+            <input
+              type="text"
+              placeholder="Enter your name"
+              value={playerName}
+              onChange={(e) => setPlayerName(e.target.value)}
+              className="w-full p-2 bg-gray-700 text-white mb-2"
+            />
+            <button
+              onClick={handleSaveScore}
+              className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4"
+            >
+              Save Score
+            </button>
+          </div>
+        )}
       {isGameOver && (
         <button
           onClick={onRestart}
