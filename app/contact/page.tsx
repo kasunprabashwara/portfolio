@@ -8,7 +8,6 @@ import {
 } from "@/components/GridComponents";
 import { gridSizePx } from "@/data/Data";
 import Link from "next/link";
-import { Space_Mono } from "next/font/google";
 
 const ContactPage = () => {
   const [bullets, setBullets] = useState<BulletType[]>([]);

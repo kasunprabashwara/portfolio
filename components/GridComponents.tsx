@@ -105,8 +105,8 @@ const BorderRectangle = (
     whiteColor?: string;
   },
 ) => {
-  const pattern = Array(height).fill(1).map((row, i) => (
-    Array(width).fill(1).map((cell, j) => (
+  const pattern = Array(height).fill(1).map((_row, i) => (
+    Array(width).fill(1).map((_cell, j) => (
       i === 0 || i === height - 1 || j === 0 || j === width - 1 ? 1 : 0
     ))
   ));

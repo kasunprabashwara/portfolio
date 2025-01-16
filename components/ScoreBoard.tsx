@@ -1,9 +1,9 @@
 import { addScore, LeaderboardEntry } from "@/app/utils/Leaderboard";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 const Scoreboard = (
   { isGameOver, onRestart, leaderboard, score }: {
-    isGameOver: Boolean;
+    isGameOver: boolean;
     onRestart: () => void;
     leaderboard: LeaderboardEntry[];
     score: number;
@@ -21,7 +21,7 @@ const Scoreboard = (
   return (
     <div className="fixed top-4 right-4 bg-black text-white p-4">
       <h2 className="text-xl font-bold">Score: {score}</h2>
-      {(isGameOver && score > leaderboard[2].score) && (
+      {(isGameOver && leaderboard.length>2 && score > leaderboard[2].score) && (
         <div className="mt-4">
           <input
             type="text"

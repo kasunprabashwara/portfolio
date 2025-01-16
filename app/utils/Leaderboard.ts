@@ -2,7 +2,6 @@ import { db } from "./Firebase";
 import {
   addDoc,
   collection,
-  DocumentData,
   limit,
   onSnapshot,
   orderBy,
@@ -11,7 +10,7 @@ import {
 
 const leaderboardCollection = collection(db, "leaderboard");
 
-export const addScore = async (name: any, score: any) => {
+export const addScore = async (name: string, score: number) => {
   await addDoc(leaderboardCollection, { name, score, timestamp: new Date() });
 };
 export interface LeaderboardEntry {

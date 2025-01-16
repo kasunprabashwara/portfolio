@@ -42,7 +42,7 @@ const ProjectsPage = () => {
     setGrid(newGrid);
   };
 
-  const getNextGeneration = (grid: any[][]) => {
+  const getNextGeneration = (grid: number[][]) => {
     const gridWidth = grid.length;
     const gridHight = grid[0].length;
     const directions = [
@@ -50,7 +50,7 @@ const ProjectsPage = () => {
       [0, -1],         [0, 1],
       [1, -1], [1, 0], [1, 1],
     ];
-    const result= grid.map((row: any[], i: number) =>
+    const result= grid.map((row: number[], i: number) =>
       row.map((cell, j) => {
         const liveNeighbors = directions.reduce((count, [dx, dy]) => {
           const x = i + dx;
