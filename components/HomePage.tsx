@@ -41,15 +41,13 @@ const HomePage = () => {
     let newIndex;
     switch (direction) {
       case "up":
-        newIndex = (currentIndex - 1 + sections.length) %
-          sections.length;
+        newIndex = (currentIndex - 1 + sections.length) % sections.length;
         break;
       case "down":
         newIndex = (currentIndex + 1) % sections.length;
         break;
       case "left":
-        newIndex = (currentIndex - 2 + sections.length) %
-          sections.length;
+        newIndex = (currentIndex - 2 + sections.length) % sections.length;
         break;
       case "right":
         newIndex = (currentIndex + 2) % sections.length;
@@ -59,6 +57,7 @@ const HomePage = () => {
     }
     setCurrentSection(sections[newIndex]);
   };
+
   const handleKeyDown = (event: KeyboardEvent) => {
     if (isGameOver) {
       return;
@@ -71,19 +70,25 @@ const HomePage = () => {
         setBoxPosition({ top: gridSizePx * 5, left: 0 });
         break;
       case "ArrowLeft":
-        setBoxPosition({ top: 0, left: -gridSizePx * 5 });
+        if (window.innerWidth >= 768) {
+          setBoxPosition({ top: 0, left: -gridSizePx * 5 });
+        }
         break;
       case "ArrowRight":
-        setBoxPosition({ top: 0, left: gridSizePx * 5 });
+        if (window.innerWidth >= 768) {
+          setBoxPosition({ top: 0, left: gridSizePx * 5 });
+        }
         break;
     }
   };
+
   const handleKeyUp = () => {
     if (isGameOver) {
       return;
     }
     setBoxPosition({ top: 0, left: 0 });
   };
+
   const handleRestart = () => {
     setScore(0);
     setBullets([]);
@@ -150,6 +155,7 @@ const HomePage = () => {
 
     return () => clearInterval(interval);
   }, [isGameOver]);
+
   useEffect(() => {
     // Add bullet from the combinations
     const interval = setInterval(() => {
@@ -169,7 +175,7 @@ const HomePage = () => {
   const detectCollision = (bullet: BulletType) => {
     const centerX = window.innerWidth / 2;
     const centerY = window.innerHeight / 2;
-    const boxSize = 20 * gridSizePx; // Assuming box size is 20 grid units
+    const boxSize = window.innerWidth < 768 ? 10 * gridSizePx : 20 * gridSizePx; // Adjust box size for small screens
 
     // Calculate actual box position relative to the screen
     const actualBoxPosition = {
@@ -198,6 +204,7 @@ const HomePage = () => {
   useEffect(() => {
     bullets.forEach(detectCollision);
   }, [bullets, boxPosition]);
+
   useEffect(() => {
     window.addEventListener("keydown", handleKeyDown);
     window.addEventListener("keyup", handleKeyUp);
@@ -258,38 +265,42 @@ const HomePage = () => {
             </FilledRectangle>
           </div>
           {/* Navigation arrows */}
-          <div className="absolute -top-32 left-1/2 -translate-x-1/2 cursor-pointer -z-10">
-            <GridSection
-              pattern={arrowPatterns.up}
-              onClick={() => handleArrowClick("up")}
-              onlyBlackClickable={false}
-              blackColor="bg-gray-300"
-            />
-          </div>
-          <div className="absolute -bottom-32 left-1/2 -translate-x-1/2 cursor-pointer -z-10">
-            <GridSection
-              pattern={arrowPatterns.down}
-              onClick={() => handleArrowClick("down")}
-              onlyBlackClickable={false}
-              blackColor="bg-gray-300"
-            />
-          </div>
-          <div className="absolute -left-32 top-1/2 -translate-y-1/2 cursor-pointer -z-10">
-            <GridSection
-              pattern={arrowPatterns.left}
-              onClick={() => handleArrowClick("left")}
-              onlyBlackClickable={false}
-              blackColor="bg-gray-300"
-            />
-          </div>
-          <div className="absolute -right-32 top-1/2 -translate-y-1/2 cursor-pointer -z-10">
-            <GridSection
-              pattern={arrowPatterns.right}
-              onClick={() => handleArrowClick("right")}
-              onlyBlackClickable={false}
-              blackColor="bg-gray-300"
-            />
-          </div>
+          {window.innerWidth >= 768 && (
+            <>
+              <div className="absolute -top-32 left-1/2 -translate-x-1/2 cursor-pointer -z-10">
+                <GridSection
+                  pattern={arrowPatterns.up}
+                  onClick={() => handleArrowClick("up")}
+                  onlyBlackClickable={false}
+                  blackColor="bg-gray-300"
+                />
+              </div>
+              <div className="absolute -bottom-32 left-1/2 -translate-x-1/2 cursor-pointer -z-10">
+                <GridSection
+                  pattern={arrowPatterns.down}
+                  onClick={() => handleArrowClick("down")}
+                  onlyBlackClickable={false}
+                  blackColor="bg-gray-300"
+                />
+              </div>
+              <div className="absolute -left-32 top-1/2 -translate-y-1/2 cursor-pointer -z-10">
+                <GridSection
+                  pattern={arrowPatterns.left}
+                  onClick={() => handleArrowClick("left")}
+                  onlyBlackClickable={false}
+                  blackColor="bg-gray-300"
+                />
+              </div>
+              <div className="absolute -right-32 top-1/2 -translate-y-1/2 cursor-pointer -z-10">
+                <GridSection
+                  pattern={arrowPatterns.right}
+                  onClick={() => handleArrowClick("right")}
+                  onlyBlackClickable={false}
+                  blackColor="bg-gray-300"
+                />
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>

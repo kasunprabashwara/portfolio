@@ -26,9 +26,9 @@ const HotelMIS = ({ currentProjectIndex }: { currentProjectIndex: number }) => {
           May 2023 - November 2023
         </p>
         <p className="mb-4">
-          A comprehensive system providing functionalities for
-          room booking, table reservations, and order
-          management. Developed as a web and mobile solution.
+          A comprehensive system providing functionalities for room booking,
+          table reservations, and order management. Developed as a web and
+          mobile solution.
         </p>
         <ul className="list-disc list-inside space-y-2 mb-4">
           <li>

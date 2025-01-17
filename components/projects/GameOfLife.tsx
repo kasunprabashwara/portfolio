@@ -3,7 +3,6 @@
 import React from "react";
 import { GridBox } from "../GridComponents";
 
-
 const GameOfLife = ({
   currentProjectIndex,
   grid,

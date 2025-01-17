@@ -32,16 +32,14 @@ const Pintos = ({ currentProjectIndex }: { currentProjectIndex: number }) => {
           >
             Pintos
           </Link>{" "}
-          is a dummy operating system built to teach how
-          operating systems work. We were told to implement the
-          user program support in our OS module. In typical
-          student fashion we thought they wouldn't check it but
-          then close to the exam a deadline was given. So with a
-          kind guidance from my friend Chathumina who completed
-          it(he gave me all the learning resouses he found) I
-          completed it. It only took like 5 days to finish (in
-          our study week). I ended up with 85% test case passes.
-          The code is in{" "}
+          is a dummy operating system built to teach how operating systems work.
+          We were told to implement the user program support in our OS module.
+          In typical student fashion we thought they wouldn't check it but then
+          close to the exam a deadline was given. So with a kind guidance from
+          my friend Chathumina who completed it(he gave me all the learning
+          resouses he found) I completed it. It only took like 5 days to finish
+          (in our study week). I ended up with 85% test case passes. The code is
+          in{" "}
           <Link
             href="https://github.com/kasunprabashwara/Pintos"
             className="font-bold hover:underline"

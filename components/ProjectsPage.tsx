@@ -80,6 +80,20 @@ const ProjectsPage = () => {
     setLargeGrid(largeGrid);
     setIsSimulating(true);
   };
+
+  const handleScroll = (event: WheelEvent) => {
+    if (event.deltaY < 0) {
+      handleArrowClick("left");
+    } else {
+      handleArrowClick("right");
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("wheel", handleScroll);
+    return () => window.removeEventListener("wheel", handleScroll);
+  }, [seenProjects, currentProjectIndex]);
+
   useEffect(() => {
     const interval = setInterval(() => {
       if (!isPaused && isSimulating) {
@@ -95,7 +109,7 @@ const ProjectsPage = () => {
       <div className="fixed inset-0 overflow-hidden flex items-center justify-center">
         <Link
           href="/"
-          className="absolute top-4 left-4 px-4 py-2 bg-black text-white border border-white"
+          className="absolute top-4 left-4 px-4 py-2 bg-black text-white border border-white hidden sm:block"
         >
           Back
         </Link>
@@ -143,7 +157,7 @@ const ProjectsPage = () => {
           Back
         </Link>
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
-          <div className="absolute -left-40 top-1/2 -translate-y-1/2 cursor-pointer">
+          <div className="hidden xl:block md absolute -left-40 top-1/2 -translate-y-1/2 cursor-pointer">
             <GridSection
               pattern={arrowPatternsBig.left}
               onClick={() => handleArrowClick("left")}
@@ -152,7 +166,7 @@ const ProjectsPage = () => {
             />
           </div>
 
-          <div className="absolute -right-40 top-1/2 -translate-y-1/2">
+          <div className="hidden xl:block absolute -right-40 top-1/2 -translate-y-1/2">
             <GridSection
               pattern={arrowPatternsBig.right}
               onClick={() => handleArrowClick("right")}
@@ -162,21 +176,44 @@ const ProjectsPage = () => {
           </div>
 
           <div className="relative">
-            <BorderRectangle width={40} height={30} whiteColor="bg-white">
-            <div className="absolute inset-0 flex items-center justify-center text-black p-4">
-              <div className="text-center w-4/5 h-6/7">
-                <div className="text-left space-y-8">
-                  <Fyp currentProjectIndex={currentProjectIndex} />
-                  <ARApp currentProjectIndex={currentProjectIndex} />
-                  <HotelMIS currentProjectIndex={currentProjectIndex} />
-                  <SupplyChain currentProjectIndex={currentProjectIndex} />
-                  <Pintos currentProjectIndex={currentProjectIndex} />
-                  <GameOfLife currentProjectIndex={currentProjectIndex} grid={grid} setGrid={setGrid} gridSize={gridSize} isSimulating={isSimulating} toggleCell={handleToggleCell} handlePlay={handlePlay}/>
+            <BorderRectangle
+              width={
+              window.innerWidth < 750
+                ? 20
+                : window.innerWidth < 1280
+                ? 30
+                : 40
+              }
+              height={
+              window.innerWidth < 750
+                ? 50
+                : window.innerWidth < 1280
+                ? 50
+                : 30
+              }
+              whiteColor="bg-white"
+            >
+              <div className="absolute inset-0 flex items-center justify-center text-black p-4">
+                <div className="text-center w-4/5 h-6/7">
+                  <div className="text-left space-y-8 text-sm xl:text-base">
+                    <Fyp currentProjectIndex={currentProjectIndex} />
+                    <ARApp currentProjectIndex={currentProjectIndex} />
+                    <HotelMIS currentProjectIndex={currentProjectIndex} />
+                    <SupplyChain currentProjectIndex={currentProjectIndex} />
+                    <Pintos currentProjectIndex={currentProjectIndex} />
+                    <GameOfLife
+                      currentProjectIndex={currentProjectIndex}
+                      grid={grid}
+                      setGrid={setGrid}
+                      gridSize={gridSize}
+                      isSimulating={isSimulating}
+                      toggleCell={handleToggleCell}
+                      handlePlay={handlePlay}
+                    />
+                  </div>
                 </div>
               </div>
-            </div>
             </BorderRectangle>
-
           </div>
         </div>
       </div>
