@@ -33,23 +33,23 @@ const HomePage = () => {
     10000,
     15000,
     20000,
-  ]; // Level-up thresholds
+  ];
 
   const handleArrowClick = (direction: string) => {
     const sections = ["home", "projects", "contact", "profile"];
     const currentIndex = sections.indexOf(currentSection);
     let newIndex;
     switch (direction) {
-      case "up":
+      case "left":
         newIndex = (currentIndex - 1 + sections.length) % sections.length;
         break;
-      case "down":
+      case "right":
         newIndex = (currentIndex + 1) % sections.length;
         break;
-      case "left":
+      case "up":
         newIndex = (currentIndex - 2 + sections.length) % sections.length;
         break;
-      case "right":
+      case "down":
         newIndex = (currentIndex + 2) % sections.length;
         break;
       default:
@@ -70,14 +70,10 @@ const HomePage = () => {
         setBoxPosition({ top: gridSizePx * 5, left: 0 });
         break;
       case "ArrowLeft":
-        if (window.innerWidth >= 768) {
-          setBoxPosition({ top: 0, left: -gridSizePx * 5 });
-        }
+        setBoxPosition({ top: 0, left: -gridSizePx * 5 });
         break;
       case "ArrowRight":
-        if (window.innerWidth >= 768) {
-          setBoxPosition({ top: 0, left: gridSizePx * 5 });
-        }
+        setBoxPosition({ top: 0, left: gridSizePx * 5 });
         break;
     }
   };
@@ -225,6 +221,37 @@ const HomePage = () => {
     }
   }, [isGameOver]);
 
+  useEffect(() => {
+    let startY: number | null = null;
+
+    const handleTouchStart = (event: TouchEvent) => {
+      startY = event.touches[0].clientY;
+    };
+
+    const handleTouchMove = (event: TouchEvent) => {
+      if (startY !== null) {
+        const currentY = event.touches[0].clientY;
+        const deltaY = startY - currentY;
+
+        if (deltaY > 500) {
+          handleArrowClick("left");
+        } else if (deltaY < 500) {
+          handleArrowClick("right");
+        }
+
+        startY = null;
+      }
+    };
+
+    window.addEventListener("touchstart", handleTouchStart);
+    window.addEventListener("touchmove", handleTouchMove);
+
+    return () => {
+      window.removeEventListener("touchstart", handleTouchStart);
+      window.removeEventListener("touchmove", handleTouchMove);
+    };
+  }, [currentSection]);
+
   return (
     <div className="fixed inset-0 overflow-hidden">
       {/* Base grid container */}
@@ -259,7 +286,7 @@ const HomePage = () => {
           >
             <FilledRectangle
               width={window.innerWidth < 768 ? 10 : 20}
-              height={window.innerWidth < 768 ? 30 : 20}
+              height={window.innerWidth < 768 ? 15 : 20}
             >
               <MiddleSection currentSection={currentSection} />
             </FilledRectangle>

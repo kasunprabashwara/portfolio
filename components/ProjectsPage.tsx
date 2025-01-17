@@ -81,17 +81,51 @@ const ProjectsPage = () => {
     setIsSimulating(true);
   };
 
-  const handleScroll = (event: WheelEvent) => {
-    if (event.deltaY < 0) {
-      handleArrowClick("left");
-    } else {
-      handleArrowClick("right");
-    }
-  };
+  useEffect(() => {
+    const handleScroll = (event: WheelEvent) => {
+      if (event.deltaY < 0) {
+        handleArrowClick("left");
+      } else if (event.deltaY > 0) {
+        handleArrowClick("right");
+      }
+    };
+
+    window.addEventListener("wheel", handleScroll);
+
+    return () => {
+      window.removeEventListener("wheel", handleScroll);
+    };
+  }, [seenProjects, currentProjectIndex]);
 
   useEffect(() => {
-    window.addEventListener("wheel", handleScroll);
-    return () => window.removeEventListener("wheel", handleScroll);
+    let startY: number | null = null;
+
+    const handleTouchStart = (event: TouchEvent) => {
+      startY = event.touches[0].clientY;
+    };
+
+    const handleTouchMove = (event: TouchEvent) => {
+      if (startY !== null) {
+        const currentY = event.touches[0].clientY;
+        const deltaY = startY - currentY;
+
+        if (deltaY > 0) {
+          handleArrowClick("right");
+        } else if (deltaY < 0) {
+          handleArrowClick("left");
+        }
+
+        startY = null;
+      }
+    };
+
+    window.addEventListener("touchstart", handleTouchStart);
+    window.addEventListener("touchmove", handleTouchMove);
+
+    return () => {
+      window.removeEventListener("touchstart", handleTouchStart);
+      window.removeEventListener("touchmove", handleTouchMove);
+    };
   }, [seenProjects, currentProjectIndex]);
 
   useEffect(() => {
