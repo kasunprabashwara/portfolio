@@ -139,14 +139,14 @@ const ProfilePage = () => {
                 <h3 className="text-4xl font-semibold mb-4">The Beginning</h3>
                 <p className="mb-2">
                   Ever since I was a kid, I had the luxary of having a personal
-                  computer. Our family was not rich. Far from it. But my borther
+                  computer. Our family was not rich. Far from it. But my brother
                   rebelled to get a computer becuase he wanted one to study ICT
                   in his school. IDK whether he actually did any study from it
                   but I got to play with it when many other kids in our
                   neighbourhood didn't have one. I played video games on it and
                   I started buying Vijaya Computer magazine every month.(I still
                   have that collection btw) Well that might be misleading tho
-                  cuz I actually read all kind of stuff back then. By age 9 I
+                  cuz I actually read all kind of stuff back then. By age 9, I
                   finished reading every single book in our house. And that
                   included my brother's school textbooks. Because of that I even
                   had a chance to participate in international junior science
@@ -155,10 +155,10 @@ const ProfilePage = () => {
                 <h3 className="text-4xl font-semibold mb-4">Uni Life</h3>
                 <div className="mb-2">
                   I passed my A/Ls with flying colors(<s>not</s>{" "}
-                  to brag) So I though now the hard times are over. How foolish
+                  to brag) So I thought, now the hard times are over. How foolish
                   was I. So I had to start working again. I think I might be
                   able to pull through with a first class at this rate. In the
-                  meantime I learned some stuff about programming, algorithms
+                  meantime, I learnt some stuff about programming, algorithms
                   and some machine learning. So here we are.
                 </div>
                 <h3 className="text-4xl font-semibold mb-6">
@@ -251,10 +251,10 @@ const ProfilePage = () => {
                   is stupid". Because if I'm going to use a template, what
                   purpose does it serve? You know it's a template. I know it's a
                   template. So why bother? And I'm not that good enough to build
-                  a interesting one myself. But then it occured to me that I
+                  an interesting one myself. But then it occured to me that I
                   could play this angle. I could make a shit site and pretend
                   that it is good. So I whipped this bad boy in like 3 days. It
-                  took more time than I thought because it never is that simple.
+                  took more time than I thought because it is never that simple.
                   But yeah. And I know there is shit ton of bugs that I'm too
                   lazy to fix. So have fun with them as well.
                 </p>
