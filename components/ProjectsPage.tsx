@@ -81,41 +81,26 @@ const ProjectsPage = () => {
     setIsSimulating(true);
   };
 
-  useEffect(() => {
-    const handleScroll = (event: WheelEvent) => {
-      if (event.deltaY < 0) {
-        handleArrowClick("left");
-      } else if (event.deltaY > 0) {
-        handleArrowClick("right");
-      }
-    };
-
-    window.addEventListener("wheel", handleScroll);
-
-    return () => {
-      window.removeEventListener("wheel", handleScroll);
-    };
-  }, [seenProjects, currentProjectIndex]);
 
   useEffect(() => {
-    let startY: number | null = null;
+    let startX: number | null = null;
 
     const handleTouchStart = (event: TouchEvent) => {
-      startY = event.touches[0].clientY;
+      startX = event.touches[0].clientX;
     };
 
     const handleTouchMove = (event: TouchEvent) => {
-      if (startY !== null) {
-        const currentY = event.touches[0].clientY;
-        const deltaY = startY - currentY;
+      if (startX !== null) {
+        const currentX = event.touches[0].clientX;
+        const deltaX = startX - currentX;
 
-        if (deltaY > 0) {
+        if (deltaX > 100) {
           handleArrowClick("right");
-        } else if (deltaY < 0) {
+          startX = null;
+        } else if (deltaX < -100) {
           handleArrowClick("left");
+          startX = null;
         }
-
-        startY = null;
       }
     };
 
@@ -142,11 +127,11 @@ const ProjectsPage = () => {
     return (
       <div className="fixed inset-0 overflow-hidden flex items-center justify-center">
         <Link
-          href="/"
-          className="absolute top-4 left-4 px-4 py-2 bg-black text-white border border-white hidden sm:block"
-        >
-          Back
-        </Link>
+        href="/"
+        className="absolute top-4 left-10 px-4 py-2 bg-black text-white border border-white hidden sm:block"
+      >
+        Back
+      </Link>
         <div>
           {largeGrid.map((row, i) => (
             <div key={i} style={{ display: "flex" }}>
@@ -182,7 +167,7 @@ const ProjectsPage = () => {
   }
 
   return (
-    <div className="fixed inset-0 overflow-hidden">
+    <div className="fixed inset-0 overflow-hidden no-scrollbar">
       <div className="w-full h-full">
         <Link
           href="/"
@@ -211,23 +196,19 @@ const ProjectsPage = () => {
 
           <div className="relative">
             <BorderRectangle
-              width={
-              window.innerWidth < 750
+              width={window.innerWidth < 750
                 ? 20
                 : window.innerWidth < 1280
                 ? 30
-                : 40
-              }
-              height={
-              window.innerWidth < 750
-                ? 50
+                : 40}
+              height={window.innerWidth < 750
+                ? 35
                 : window.innerWidth < 1280
                 ? 50
-                : 30
-              }
+                : 30}
               whiteColor="bg-white"
             >
-              <div className="absolute inset-0 flex items-center justify-center text-black p-4">
+              <div className="absolute inset-0 flex items-center justify-center text-black md:py-0 py-10 overflow-y-auto no-scrollbar">
                 <div className="text-center w-4/5 h-6/7">
                   <div className="text-left space-y-8 text-sm xl:text-base">
                     <Fyp currentProjectIndex={currentProjectIndex} />

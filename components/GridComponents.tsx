@@ -5,11 +5,13 @@ const GridBox = (
     onClick,
     blackColor = "bg-black",
     whiteColor = "bg-transparent",
+    zIndex = 1,
   }: {
     isBlack?: boolean;
     onClick?: () => void;
     blackColor?: string;
     whiteColor?: string;
+    zIndex?: number;
   },
 ) => (
   <div
@@ -21,6 +23,7 @@ const GridBox = (
       cursor: onClick ? "pointer" : "default",
       height: `${gridSizePx}px`,
       width: `${gridSizePx}px`,
+      zIndex: isBlack ? zIndex : 0,
     }}
   />
 );
@@ -52,12 +55,14 @@ const GridSection = (
     onlyBlackClickable = true,
     blackColor = "bg-black",
     whiteColor = "bg-transparent",
+    zIndex = 0,
   }: {
     pattern: number[][];
     onClick?: () => void;
     onlyBlackClickable?: boolean;
     blackColor?: string;
     whiteColor?: string;
+    zIndex?: number;
   },
 ) => {
   return (
@@ -73,6 +78,7 @@ const GridSection = (
                 : onClick}
               blackColor={blackColor}
               whiteColor={whiteColor}
+              zIndex={zIndex}
             />
           ))}
         </div>
@@ -125,6 +131,7 @@ const BorderRectangle = (
         pattern={pattern}
         onClick={onClick}
         whiteColor={whiteColor}
+        zIndex={10}
       />
       <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center">
         {children}

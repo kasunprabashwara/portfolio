@@ -23,7 +23,7 @@ const Scoreboard = (
   return (
     <div className="fixed top-4 right-4 bg-black text-white p-4">
       <h2 className="text-xl font-bold">Score: {score}</h2>
-      {(isGameOver && leaderboard.length > 2 && score > leaderboard[2].score) &&
+      {(isGameOver && leaderboard.length > 3 && score > leaderboard[3].score) &&
         (
           <div className="mt-4">
             <input
