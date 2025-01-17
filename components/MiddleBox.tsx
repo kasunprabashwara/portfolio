@@ -11,32 +11,28 @@ const MiddleSection = ({ currentSection }: MiddleBoxProps) => {
       <div className="text-center w-2/3">
         {currentSection === "home" && (
           <div className="flex flex-col gap-10">
-            <h2 className="text-5xl">Yes this is my portfolio site</h2>
-            <p className="text-xl">
+            <h2 className="text-3xl md:text-5xl">Yes this is my portfolio site</h2>
+            <p className="text-lg md:text-2xl">
               Try to navigate to other sections somehow. I agree that this site
               might not win any design of the year awards.
             </p>
           </div>
         )}
         {currentSection === "projects" && (
-          <Link
-            href={"/projects"}
-          >
+          <Link href={"/projects"}>
             <div className="flex flex-col gap-10">
-              <h2 className="text-5xl">Projects</h2>
-              <p className="text-xl">
+              <h2 className="text-4xl md:text-6xl">Projects</h2>
+              <p className="text-lg md:text-2xl">
                 Here are some of the projects I have worked on.
               </p>
             </div>
           </Link>
         )}
         {currentSection === "contact" && (
-          <Link
-            href={"/contact"}
-          >
+          <Link href={"/contact"}>
             <div className="flex flex-col gap-10">
-              <h2 className="text-5xl">Contact</h2>
-              <p className="text-xl">
+              <h2 className="text-4xl md:text-6xl">Contact</h2>
+              <p className="text-lg md:text-2xl">
                 Reach out to me if you have any questions or just want to say
                 hi.
               </p>
@@ -44,12 +40,10 @@ const MiddleSection = ({ currentSection }: MiddleBoxProps) => {
           </Link>
         )}
         {currentSection === "profile" && (
-          <Link
-            href={"/profile"}
-          >
+          <Link href={"/profile"}>
             <div className="flex flex-col gap-10">
-              <h2 className="text-5xl">Profile</h2>
-              <p className="text-xl">
+              <h2 className="text-4xl md:text-6xl">Profile</h2>
+              <p className="text-lg md:text-2xl">
                 Here is a little bit about me.
               </p>
             </div>

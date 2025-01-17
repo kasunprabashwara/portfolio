@@ -9,6 +9,13 @@ import {
 import { arrowPatternsBig, gridSizePx } from "@/data/Data";
 import Link from "next/link";
 import Image from "next/image";
+import Fyp from "./projects/Fyp";
+import ARApp from "./projects/ARapp";
+import HotelMIS from "./projects/HotelMIS";
+import SupplyChain from "./projects/SupplyChain";
+import Pintos from "./projects/Pintos";
+import GameOfLife from "./projects/GameOfLife";
+import { getNextGeneration, toggleCell } from "@/utils/GameOfLifeLogic";
 
 const ProjectsPage = () => {
   const [currentProjectIndex, setCurrentProjectIndex] = useState(0);
@@ -44,48 +51,11 @@ const ProjectsPage = () => {
     }
   };
 
-  const toggleCell = (row: number, col: number) => {
-    const newGrid = grid.map((r, i) =>
-      r.map((cell, j) => (i === row && j === col ? 1 - cell : cell))
-    );
+  const handleToggleCell = (row: number, col: number) => {
+    const newGrid = toggleCell(grid, row, col);
     setGrid(newGrid);
   };
 
-  const getNextGeneration = (grid: number[][]) => {
-    const gridWidth = grid.length;
-    const gridHight = grid[0].length;
-    const directions = [
-      [-1, -1],
-      [-1, 0],
-      [-1, 1],
-      [0, -1],
-      [0, 1],
-      [1, -1],
-      [1, 0],
-      [1, 1],
-    ];
-    const result = grid.map((row: number[], i: number) =>
-      row.map((cell, j) => {
-        const liveNeighbors = directions.reduce((count, [dx, dy]) => {
-          const x = i + dx;
-          const y = j + dy;
-          if (x >= 0 && x < gridWidth && y >= 0 && y < gridHight) {
-            count += grid[x][y];
-          }
-          return count;
-        }, 0);
-
-        if (cell === 1 && (liveNeighbors === 2 || liveNeighbors === 3)) {
-          return 1;
-        } else if (cell === 0 && liveNeighbors === 3) {
-          return 1;
-        } else {
-          return 0;
-        }
-      })
-    );
-    return result;
-  };
   const handlePlay = () => {
     const rows = Math.floor(window.innerHeight / gridSizePx);
     const cols = Math.floor(window.innerWidth / gridSizePx);
@@ -136,7 +106,7 @@ const ProjectsPage = () => {
                 <GridBox
                   key={`${i}-${j}`}
                   isBlack={cell === 1}
-                  onClick={() => toggleCell(i, j)}
+                  onClick={() => handleToggleCell(i, j)}
                 />
               ))}
             </div>
@@ -192,326 +162,21 @@ const ProjectsPage = () => {
           </div>
 
           <div className="relative">
-            <BorderRectangle width={40} height={30} whiteColor="bg-white" />
-
+            <BorderRectangle width={40} height={30} whiteColor="bg-white">
             <div className="absolute inset-0 flex items-center justify-center text-black p-4">
               <div className="text-center w-4/5 h-6/7">
                 <div className="text-left space-y-8">
-                  {currentProjectIndex === 0 && (
-                    <div className="flex flex-col md:flex-row items-center md:items-center gap-8">
-                      <div className="w-full md:w-1/2 align-middle">
-                        <Image
-                          src="./metatrader.png"
-                          width={400}
-                          height={600}
-                          alt="Final Year Project"
-                          className="w-full h-auto border border-black"
-                        />
-                      </div>
-                      <div className="w-full md:w-1/2">
-                        <h3 className="text-2xl font-bold mb-2">
-                          Automated Multi-Currency Forex Trading
-                        </h3>
-                        <p className="italic text-sm mb-2">Ongoing</p>
-                        <p className="mb-4">
-                          This is our final year project. We’re building a
-                          system that can automate the forex trading process.
-                          Using RL algorithms like PPO and DQN with LSTM feature
-                          extractors. We are currently training these models
-                          with different parameters and benchmaking them.
-                        </p>
-                        <ul className="list-disc list-inside space-y-2 mb-4">
-                          <li>Optimizing trading moves with RL.</li>
-                          <li>LSTM feature extractors</li>
-                          <li>
-                            Team: Me, Thisura Gallage, and Savin Gunawardana.
-                          </li>
-                        </ul>
-                        <p>
-                          <strong>Tech Stack:</strong>{" "}
-                          Tianshou, Python, MetaTrader 5
-                        </p>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Augmented Reality Mobile Application */}
-                  {currentProjectIndex === 1 && (
-                    <div className="flex flex-col md:flex-row items-center md:items-center gap-8">
-                      <div className="w-full md:w-1/2 align-middle">
-                        <Image
-                          src="./ar_project.png"
-                          width={400}
-                          height={600}
-                          alt="Augmented Reality Mobile Application"
-                          className="w-full h-auto border border-black"
-                        />
-                      </div>
-                      <div className="w-full md:w-1/2">
-                        <h3 className="text-2xl font-bold mb-2">
-                          Augmented Reality Mobile Application
-                        </h3>
-                        <p className="italic text-sm mb-2">December 2024</p>
-                        <p className="mb-4">
-                          Initially all players needs to rearrange 4 drawings to
-                          align their AR counterparts. That gave key to the next
-                          level. And so on and so forth. I handled the UI,
-                          authentication, and live leaderboard, while Ginushmal
-                          nailed the witchy 3D stuff. This was the first time I
-                          worked with Unity and we had 2 days to finish it. So
-                          we pulled an all-nighter and somehow made it to the
-                          finish line. The repo was in Unity version control.
-                          Ginushaml reuploaded it on{" "}
-                          <Link
-                            className="
-                        font-bold hover:underline"
-                            href="https://github.com/Ginushmal/HitTheGroundScav"
-                          >
-                            here
-                          </Link>
-                        </p>
-                        <ul className="list-disc list-inside space-y-2 mb-4">
-                          <li>
-                            Firebase-powered authentication and live
-                            leaderboard.
-                          </li>
-                          <li>
-                            Collaborated with Ginushmal Wikumjith on 3D assets.
-                          </li>
-                        </ul>
-                        <p>
-                          <strong>Tech Stack:</strong> Unity, Firebase
-                        </p>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Hotel & Restaurant MIS */}
-                  {currentProjectIndex === 2 && (
-                    <div className="flex flex-col md:flex-row items-center md:items-center gap-8">
-                      <div className="w-full md:w-1/2 align-middle">
-                        <Image
-                          src="./sem5_project.png"
-                          width={400}
-                          height={600}
-                          alt="Hotel & Restaurant MIS"
-                          className="w-full h-auto border border-black"
-                        />
-                      </div>
-                      <div className="w-full md:w-1/2">
-                        <h3 className="text-2xl font-bold mb-2">
-                          Hotel & Restaurant MIS
-                        </h3>
-                        <p className="italic text-sm mb-2">
-                          May 2023 - November 2023
-                        </p>
-                        <p className="mb-4">
-                          A comprehensive system providing functionalities for
-                          room booking, table reservations, and order
-                          management. Developed as a web and mobile solution.
-                        </p>
-                        <ul className="list-disc list-inside space-y-2 mb-4">
-                          <li>
-                            Built{" "}
-                            <Link
-                              className="font-bold hover:underline"
-                              href="https://github.com/kasunprabashwara/virtual_waiter"
-                            >
-                              Virtual Waiter
-                            </Link>{" "}
-                            and{" "}
-                            <Link
-                              className="font-bold hover:underline"
-                              href="https://github.com/thiva-k/Restaurant-Order-Manager"
-                            >
-                              restaurant manager
-                            </Link>{" "}
-                            apps using Java.
-                          </li>
-                          <li>
-                            Collaborated with teammates Thivaharan and Wathmi.
-                          </li>
-                        </ul>
-                        <p>
-                          <strong>Tech Stack:</strong>{" "}
-                          React, Android Studio, Firebase
-                        </p>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Supply Chain Management System */}
-                  {currentProjectIndex === 3 && (
-                    <div className="flex flex-col md:flex-row items-center md:items-center gap-8">
-                      <div className="w-full md:w-1/2 align-middle justify-center">
-                        <Image
-                          src="./supply_chain_frontend.png"
-                          width={400}
-                          height={600}
-                          alt="Supply Chain Management System"
-                          className="w-full h-auto border border-black"
-                        />
-                      </div>
-                      <div className="w-full md:w-1/2">
-                        <h3 className="text-2xl font-bold mb-2">
-                          Supply Chain Management System
-                        </h3>
-                        <p className="italic text-sm mb-2">
-                          June 2022 - December 2022
-                        </p>
-                        <p className="mb-4">
-                          This was done as our project in Database module. I
-                          handled all the{" "}
-                          <Link
-                            className="font-bold hover:underline"
-                            href="https://github.com/kasunprabashwara/supply_chain_front-end"
-                          >
-                            frontend
-                          </Link>{" "}
-                          and{" "}
-                          <Link
-                            className="font-bold hover:underline"
-                            href="https://github.com/kasunprabashwara/supply_chain_back-end"
-                          >
-                            backend
-                          </Link>{" "}
-                          stuff with react and express js. This was the first
-                          time I ever tried full stack application development.
-                          I think that might be obvious looking at the login
-                          page. (Well I guess this page doesn't look that good
-                          too so nothing may have changed) So it was pretty
-                          challenging at that time and we almost gave up on it.
-                          But like week before deadline, I tried connecting my
-                          backend to the database and to my surprise it worked.
-                          I informed thisura about it and he started looking
-                          into sql procedures. And week later we had a fully
-                          functional supply chain management system. I used
-                          docker to deploy the application to AWS EC2 instance.
-                          Why docker? because I wanted to learn it and why not
-                          at this point.
-                        </p>
-                        <ul className="list-disc list-inside space-y-2 mb-4">
-                          <li>Implemented database triggers and procedures.</li>
-                          <li>Handled both frontend and backend.</li>
-                        </ul>
-                        <p>
-                          <strong>Tech Stack:</strong> MySQL, React, Docker
-                        </p>
-                      </div>
-                    </div>
-                  )}
-                  {/* Pintos User Program Implementation */}
-                  {currentProjectIndex === 4 && (
-                    <div className="flex flex-col md:flex-row items-center md:items-center gap-8">
-                      <div className="w-full md:w-1/2 align-middle">
-                        <Image
-                          src="./pintos.png"
-                          width={400}
-                          height={600}
-                          alt="Pintos User Program Implementation"
-                          className="w-full h-auto border border-black"
-                        />
-                      </div>
-                      <div className="w-full md:w-1/2">
-                        <h3 className="text-2xl font-bold mb-2">
-                          Pintos User Program Implementation
-                        </h3>
-                        <p className="italic text-sm mb-2">
-                          June 2022 - December 2022
-                        </p>
-                        <p className="mb-4">
-                          <Link
-                            className="font-bold hover:underline"
-                            href={"https://web.stanford.edu/class/cs140/projects/pintos/pintos_1.html"}
-                          >
-                            Pintos
-                          </Link>{" "}
-                          is a dummy operating system built to teach how
-                          operating systems work. We were told to implement the
-                          user program support in our OS module. In typical
-                          student fashion we thought they wouldn't check it but
-                          then close to the exam a deadline was given. So with a
-                          kind guidance from my friend Chathumina who completed
-                          it(he gave me all the learning resouses he found) I
-                          completed it. It only took like 5 days to finish (in
-                          our study week). I ended up with 85% test case passes.
-                          The code is in{" "}
-                          <Link
-                            href="https://github.com/kasunprabashwara/Pintos"
-                            className="font-bold hover:underline"
-                          >
-                            here
-                          </Link>
-                        </p>
-                        <ul className="list-disc list-inside space-y-2 mb-4">
-                          <li>
-                            Implemented system calls and concurrency management.
-                          </li>
-                          <li>
-                            Survived on coffee and deadlines to finish this.
-                          </li>
-                        </ul>
-                        <p>
-                          <strong>Tech Stack:</strong> QEMU, C
-                        </p>
-                      </div>
-                    </div>
-                  )}
-                  {currentProjectIndex === 5 && (
-                    <div className="w-full h-full flex flex-col items-center justify-center">
-                      <h3 className="text-2xl font-bold mb-4 text-center">
-                        Nice, you have seen all the projects here.
-                      </h3>
-                      <p className="mb-4 text-center">
-                        Wanna play some Game of Life while you rest? Did you
-                        know the Game of Life is Turing complete? So in theory,
-                        you can do whatever you want (probably no bringing back
-                        dead people though).
-                      </p>
-                      <p className="mb-4 text-center">
-                        Click below to set the starting position and click play.
-                      </p>
-
-                      <div className="w-full flex justify-center mb-4">
-                        <div className="border border-gray-500">
-                          {grid.map((row, i) => (
-                            <div key={i} style={{ display: "flex" }}>
-                              {row.map((cell, j) => (
-                                <GridBox
-                                  key={`${i}-${j}`}
-                                  isBlack={cell === 1}
-                                  onClick={() => toggleCell(i, j)}
-                                />
-                              ))}
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-
-                      <div className="space-x-4 flex justify-center">
-                        <button
-                          onClick={handlePlay}
-                          className="px-4 py-2 bg-black text-white border border-white"
-                        >
-                          {isSimulating ? "Pause" : "Play"}
-                        </button>
-                        <button
-                          onClick={() =>
-                            setGrid(
-                              Array(gridSize)
-                                .fill(0)
-                                .map(() => Array(gridSize).fill(0)),
-                            )}
-                          className="px-4 py-2 bg-black text-white border border-white"
-                        >
-                          Reset
-                        </button>
-                      </div>
-                    </div>
-                  )}
+                  <Fyp currentProjectIndex={currentProjectIndex} />
+                  <ARApp currentProjectIndex={currentProjectIndex} />
+                  <HotelMIS currentProjectIndex={currentProjectIndex} />
+                  <SupplyChain currentProjectIndex={currentProjectIndex} />
+                  <Pintos currentProjectIndex={currentProjectIndex} />
+                  <GameOfLife currentProjectIndex={currentProjectIndex} grid={grid} setGrid={setGrid} gridSize={gridSize} isSimulating={isSimulating} toggleCell={handleToggleCell} handlePlay={handlePlay}/>
                 </div>
               </div>
             </div>
+            </BorderRectangle>
+
           </div>
         </div>
       </div>

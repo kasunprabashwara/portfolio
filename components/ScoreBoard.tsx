@@ -1,4 +1,4 @@
-import { addScore, LeaderboardEntry } from "@/app/utils/Leaderboard";
+import { addScore, LeaderboardEntry } from "@/utils/Leaderboard";
 import React, { useState } from "react";
 
 const Scoreboard = (

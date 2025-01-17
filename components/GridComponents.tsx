@@ -1,4 +1,4 @@
-import { gridSize } from "@/data/Data";
+import { gridSize, gridSizePx } from "@/data/Data";
 const GridBox = (
   {
     isBlack = false,
@@ -12,7 +12,6 @@ const GridBox = (
     whiteColor?: string;
   },
 ) => (
-  // if there is onClick, then it becomes clickable
   <div
     className={`w-${gridSize} h-${gridSize} ${
       isBlack ? blackColor : whiteColor
@@ -20,8 +19,8 @@ const GridBox = (
     onClick={onClick}
     style={{
       cursor: onClick ? "pointer" : "default",
-      height: "24px",
-      width: "24px",
+      height: `${gridSizePx}px`,
+      width: `${gridSizePx}px`,
     }}
   />
 );
@@ -83,14 +82,22 @@ const GridSection = (
 };
 
 const FilledRectangle = (
-  { width = 20, height = 20, onClick = () => {} }: {
+  { width = 20, height = 20, onClick = () => {}, children }: {
     width?: number;
     height?: number;
     onClick?: () => void;
+    children?: React.ReactNode;
   },
 ) => {
   const pattern = Array(height).fill(1).map(() => Array(width).fill(1));
-  return <GridSection pattern={pattern} onClick={onClick} />;
+  return (
+    <div className="relative">
+      <GridSection pattern={pattern} onClick={onClick} />
+      <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center">
+        {children}
+      </div>
+    </div>
+  );
 };
 const BorderRectangle = (
   {
@@ -98,11 +105,13 @@ const BorderRectangle = (
     height = 20,
     onClick = () => {},
     whiteColor = "bg-transparent",
+    children,
   }: {
     width?: number;
     height?: number;
     onClick?: () => void;
     whiteColor?: string;
+    children?: React.ReactNode;
   },
 ) => {
   const pattern = Array(height).fill(1).map((_row, i) => (
@@ -111,7 +120,12 @@ const BorderRectangle = (
     ))
   ));
   return (
-    <GridSection pattern={pattern} onClick={onClick} whiteColor={whiteColor} />
+    <div className="relative">
+      <GridSection pattern={pattern} onClick={onClick} whiteColor={whiteColor} />
+      <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center">
+        {children}
+      </div>
+    </div>
   );
 };
 

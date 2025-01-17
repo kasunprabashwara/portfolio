@@ -8,10 +8,7 @@ import {
 import Scoreboard from "@/components/ScoreBoard";
 import { arrowPatterns, bulletCombinations, gridSizePx } from "@/data/Data";
 import React, { useEffect, useRef, useState } from "react";
-import {
-  LeaderboardEntry,
-  subscribeToLeaderboard,
-} from "@/app/utils/Leaderboard";
+import { LeaderboardEntry, subscribeToLeaderboard } from "@/utils/Leaderboard";
 import MiddleSection from "@/components/MiddleBox";
 
 const HomePage = () => {
@@ -253,10 +250,12 @@ const HomePage = () => {
                 `translate(${boxPosition.left}px, ${boxPosition.top}px)`,
             }}
           >
-            <FilledRectangle width={20} height={20} />
-
-            {/* Content overlay */}
-            <MiddleSection currentSection={currentSection} />
+            <FilledRectangle
+              width={window.innerWidth < 768 ? 10 : 20}
+              height={window.innerWidth < 768 ? 30 : 20}
+            >
+              <MiddleSection currentSection={currentSection} />
+            </FilledRectangle>
           </div>
           {/* Navigation arrows */}
           <div className="absolute -top-32 left-1/2 -translate-x-1/2 cursor-pointer -z-10">
