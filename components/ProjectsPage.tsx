@@ -81,7 +81,6 @@ const ProjectsPage = () => {
     setIsSimulating(true);
   };
 
-
   useEffect(() => {
     let startX: number | null = null;
 
@@ -127,11 +126,11 @@ const ProjectsPage = () => {
     return (
       <div className="fixed inset-0 overflow-hidden flex items-center justify-center">
         <Link
-        href="/"
-        className="absolute top-4 left-10 px-4 py-2 bg-black text-white border border-white hidden sm:block"
-      >
-        Back
-      </Link>
+          href="/"
+          className="absolute top-4 left-10 px-4 py-2 bg-black text-white border border-white hidden sm:block"
+        >
+          Back
+        </Link>
         <div>
           {largeGrid.map((row, i) => (
             <div key={i} style={{ display: "flex" }}>
@@ -197,7 +196,7 @@ const ProjectsPage = () => {
           <div className="relative">
             <BorderRectangle
               width={window.innerWidth < 750
-                ? 20
+                ? 18
                 : window.innerWidth < 1280
                 ? 30
                 : 40}

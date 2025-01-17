@@ -214,7 +214,9 @@ const HomePage = () => {
   useEffect(() => {
     if (!isGameOver) {
       const interval = setInterval(() => {
-        setScore((prevScore) => prevScore + 1);
+        if (window.innerWidth >= 1000) {
+          setScore((prevScore) => prevScore + 1);
+        }
       }, 100);
 
       return () => clearInterval(interval);

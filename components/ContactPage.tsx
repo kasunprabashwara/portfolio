@@ -81,12 +81,12 @@ const ContactPage = () => {
     <div className="fixed inset-0 overflow-hidden">
       {/* Base grid container */}
       <div className="w-full h-full">
-      <Link
-        href="/"
-        className="absolute top-4 left-10 px-4 py-2 bg-black text-white border border-white hidden sm:block"
-      >
-        Back
-      </Link>
+        <Link
+          href="/"
+          className="absolute top-4 left-10 px-4 py-2 bg-black text-white border border-white hidden sm:block"
+        >
+          Back
+        </Link>
         {/* Bullets */}
         {bullets.map((bullet, index) => (
           <Bullet
@@ -100,7 +100,7 @@ const ContactPage = () => {
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
           <BorderRectangle
             width={window.innerWidth < 750
-              ? 20
+              ? 18
               : window.innerWidth < 1280
               ? 30
               : 40}
