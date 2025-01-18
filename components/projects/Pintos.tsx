@@ -37,7 +37,7 @@ const Pintos = ({ currentProjectIndex }: { currentProjectIndex: number }) => {
           In typical student fashion we thought they wouldn't check it but then
           close to the exam a deadline was given. So with a kind guidance from
           my friend Chathumina who completed it(he gave me all the learning
-          resouses he found) I completed it. It only took like 5 days to finish
+          resources he found) I completed it. It only took like 5 days to finish
           (in our study week). I ended up with 85% test case passes. The code is
           in{" "}
           <Link

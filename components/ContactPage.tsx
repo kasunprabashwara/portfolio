@@ -118,7 +118,7 @@ const ContactPage = () => {
                   If you really need to contact me for some reason, you can try
                   the &nbsp;
                   <Link
-                    href="https://www.linkedin.com/in/your-profile"
+                    href="https://www.linkedin.com/in/kasunprabashwara"
                     target="_blank"
                     className="text-blue-500 hover:underline"
                   >
@@ -143,7 +143,7 @@ const ContactPage = () => {
                   </a>&nbsp; would also work. Although it lacks the charm of
                   sending a mail by post. And I'm also on &nbsp;{" "}
                   <Link
-                    href="https://github.com/your-username"
+                    href="https://github.com/kasunprabashwara"
                     target="_blank"
                     className="text-gray-800 hover:underline"
                   >

@@ -30,7 +30,7 @@ const ARApp = ({ currentProjectIndex }: { currentProjectIndex: number }) => {
           Ginushmal nailed the witchy 3D stuff. This was the first time I worked
           with Unity and we had 2 days to finish it. So we pulled an all-nighter
           and somehow made it to the finish line. The repo was in Unity version
-          control. Ginushaml reuploaded it on{" "}
+          control. Ginushamal reuploaded it on{" "}
           <Link
             className="font-bold hover:underline"
             href="https://github.com/Ginushmal/HitTheGroundScav"

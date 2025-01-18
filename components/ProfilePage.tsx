@@ -138,7 +138,7 @@ const ProfilePage = () => {
                 </p>
                 <h3 className="text-4xl font-semibold mb-4">The Beginning</h3>
                 <p className="mb-2">
-                  Ever since I was a kid, I had the luxary of having a personal
+                  Ever since I was a kid, I had the luxury of having a personal
                   computer. Our family was not rich. Far from it. But my brother
                   rebelled to get a computer becuase he wanted one to study ICT
                   in his school. IDK whether he actually did any study from it
