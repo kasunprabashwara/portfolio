@@ -118,7 +118,7 @@ const ProfilePage = () => {
                 <Image
                   src="./kasun_prabashwara_image.jpg" // Replace with your image path
                   alt="Kasun Prabashwara"
-                  width={200}
+                  width={350}
                   height={200}
                   className="mx-auto border-2 border-black"
                 />
@@ -225,21 +225,24 @@ const ProfilePage = () => {
                 </div>
                 <div className="mb-8">
                   <h4 className="text-2xl font-bold underline mb-4">
-                    Highlights & Achievements
+                  Highlights & Achievements
                   </h4>
                   <div className="flex flex-wrap gap-4">
-                    <span className=" text-black px-4 py-2">
-                      Bashaway 2023 - 3rd Place
-                    </span>
-                    <span className=" text-black px-4 py-2 rounded-md">
-                      SLRC 2022 Finalist
-                    </span>
-                    <span className=" text-black px-4 py-2 rounded-md">
-                      Dean’s List - Semester 1, 3, 5
-                    </span>
-                    <span className=" text-black px-4 py-2 rounded-md">
-                      Director, UOM Drama Club
-                    </span>
+                  <span className=" text-white bg-black px-4 py-2">
+                    Bashaway 2023 - 3rd Place
+                  </span>
+                  <span className=" text-white bg-black px-4 py-2">
+                    SLRC 2022 Finalist
+                  </span>
+                  <span className=" text-white bg-black px-4 py-2">
+                    Dean’s List - Semester 1, 3, 5
+                  </span>
+                  <span className=" text-white bg-black px-4 py-2">
+                    Director, UOM Drama Club
+                  </span>
+                  <span className=" text-white bg-black px-4 py-2">
+                    2nd and 6th place in National Junior Science Olympiad 2012, 2011
+                  </span>
                   </div>
                 </div>
                 <h3 className="text-4xl font-semibold mb-4">
@@ -258,7 +261,7 @@ const ProfilePage = () => {
                   But yeah. And I know there is shit ton of bugs that I'm too
                   lazy to fix. So have fun with them as well.
                 </p>
-                <div className="h-10" />
+                <div className="h-20" />
               </div>
             </div>
           </BorderRectangle>

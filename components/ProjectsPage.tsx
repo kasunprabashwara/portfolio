@@ -127,7 +127,7 @@ const ProjectsPage = () => {
       <div className="fixed inset-0 overflow-hidden flex items-center justify-center">
         <Link
           href="/"
-          className="absolute top-4 left-10 px-4 py-2 bg-black text-white border border-white hidden sm:block"
+          className="absolute  z-20 top-4 left-10 px-4 py-2 bg-black text-white border border-white hidden sm:block"
         >
           Back
         </Link>
@@ -138,7 +138,6 @@ const ProjectsPage = () => {
                 <GridBox
                   key={`${i}-${j}`}
                   isBlack={cell === 1}
-                  onClick={() => handleToggleCell(i, j)}
                 />
               ))}
             </div>

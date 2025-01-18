@@ -2,7 +2,7 @@ import { gridSize, gridSizePx } from "@/data/Data";
 const GridBox = (
   {
     isBlack = false,
-    onClick,
+    onClick = undefined,
     blackColor = "bg-black",
     whiteColor = "bg-transparent",
     zIndex = 1,
@@ -51,7 +51,7 @@ const Bullet = (
 const GridSection = (
   {
     pattern,
-    onClick = () => {},
+    onClick = undefined,
     onlyBlackClickable = true,
     blackColor = "bg-black",
     whiteColor = "bg-transparent",
@@ -88,7 +88,7 @@ const GridSection = (
 };
 
 const FilledRectangle = (
-  { width = 20, height = 20, onClick = () => {}, children }: {
+  { width = 20, height = 20, onClick = undefined, children }: {
     width?: number;
     height?: number;
     onClick?: () => void;
@@ -109,7 +109,7 @@ const BorderRectangle = (
   {
     width = 20,
     height = 20,
-    onClick = () => {},
+    onClick = undefined,
     whiteColor = "bg-transparent",
     children,
   }: {
