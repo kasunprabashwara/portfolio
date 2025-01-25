@@ -155,11 +155,11 @@ const ProfilePage = () => {
                 <h3 className="text-4xl font-semibold mb-4">Uni Life</h3>
                 <div className="mb-2">
                   I passed my A/Ls with flying colors(<s>not</s>{" "}
-                  to brag) So I thought, now the hard times are over. How foolish
-                  was I. So I had to start working again. I think I might be
-                  able to pull through with a first class at this rate. In the
-                  meantime, I learnt some stuff about programming, algorithms
-                  and some machine learning. So here we are.
+                  to brag) So I thought, now the hard times are over. How
+                  foolish was I. So I had to start working again. I think I
+                  might be able to pull through with a first class at this rate.
+                  In the meantime, I learnt some stuff about programming,
+                  algorithms and some machine learning. So here we are.
                 </div>
                 <h3 className="text-4xl font-semibold mb-6">
                   Uhmm, Professional Stuff
@@ -225,24 +225,25 @@ const ProfilePage = () => {
                 </div>
                 <div className="mb-8">
                   <h4 className="text-2xl font-bold underline mb-4">
-                  Highlights & Achievements
+                    Highlights & Achievements
                   </h4>
                   <div className="flex flex-wrap gap-4">
-                  <span className=" text-white bg-black px-4 py-2">
-                    Bashaway 2023 - 3rd Place
-                  </span>
-                  <span className=" text-white bg-black px-4 py-2">
-                    SLRC 2022 Finalist
-                  </span>
-                  <span className=" text-white bg-black px-4 py-2">
-                    Dean’s List - Semester 1, 3, 5
-                  </span>
-                  <span className=" text-white bg-black px-4 py-2">
-                    Director, UOM Drama Club
-                  </span>
-                  <span className=" text-white bg-black px-4 py-2">
-                    2nd and 6th place in National Junior Science Olympiad 2012, 2011
-                  </span>
+                    <span className=" text-white bg-black px-4 py-2">
+                      Bashaway 2023 - 3rd Place
+                    </span>
+                    <span className=" text-white bg-black px-4 py-2">
+                      SLRC 2022 Finalist
+                    </span>
+                    <span className=" text-white bg-black px-4 py-2">
+                      Dean’s List - Semester 1, 3, 5
+                    </span>
+                    <span className=" text-white bg-black px-4 py-2">
+                      Director, UOM Drama Club
+                    </span>
+                    <span className=" text-white bg-black px-4 py-2">
+                      2nd and 6th place in National Junior Science Olympiad
+                      2012, 2011
+                    </span>
                   </div>
                 </div>
                 <h3 className="text-4xl font-semibold mb-4">

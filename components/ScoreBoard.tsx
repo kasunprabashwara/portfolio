@@ -14,7 +14,7 @@ const Scoreboard = (
 
   // Save score to Firebase when game is over and name is provided
   const handleSaveScore = async () => {
-    if (playerName.trim() && isGameOver) {
+    if (playerName.trim() && isGameOver && playerName.length <= 100) {
       await addScore(playerName, score);
       setPlayerName("");
       setScore(0);
@@ -32,10 +32,12 @@ const Scoreboard = (
               value={playerName}
               onChange={(e) => setPlayerName(e.target.value)}
               className="w-full p-2 bg-gray-700 text-white mb-2"
+              maxLength={100}
             />
             <button
               onClick={handleSaveScore}
-              className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4"
+              className={`w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4`}
+              disabled={playerName.length > 100}
             >
               Save Score
             </button>
@@ -57,9 +59,23 @@ const Scoreboard = (
           {leaderboard.slice(0, 4).map((entry, index) => (
             <div
               key={index}
-              className="p-2 bg-gray-700"
+              className="p-2 bg-gray-700 flex items-center"
             >
-              <span className="font-bold">{entry.score}</span>: {entry.name}
+              <span className="font-bold mr-2">{entry.score}</span>:
+              <div className="relative group flex-1 overflow-hidden">
+                <div className="overflow-hidden whitespace-nowrap max-w-xs">
+                  {entry.name.length > 15
+                    ? entry.name.slice(0, 15) + "..."
+                    : entry.name}
+                </div>
+                {entry.name.length > 15 && (
+                  <div className="absolute left-0 top-0 w-full h-full bg-gray-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <div className="whitespace-nowrap group-hover:animate-scroll">
+                      {entry.name}
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
           ))}
         </div>

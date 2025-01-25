@@ -47,13 +47,13 @@ const SupplyChain = (
           full stack application development. I think that might be obvious
           looking at the login page. (Well I guess this page doesn't look that
           good too so nothing may have changed) So it was pretty challenging at
-          that time and we almost gave up on it. But like a week before deadline,
-          I tried connecting my backend to the database and to my surprise it
-          worked. I informed thisura about it and he started looking into sql
-          procedures. And week later we had a fully functional supply chain
-          management system. I used docker to deploy the application to AWS EC2
-          instance. Why docker? because I wanted to learn it and why not at this
-          point.
+          that time and we almost gave up on it. But like a week before
+          deadline, I tried connecting my backend to the database and to my
+          surprise it worked. I informed thisura about it and he started looking
+          into sql procedures. And week later we had a fully functional supply
+          chain management system. I used docker to deploy the application to
+          AWS EC2 instance. Why docker? because I wanted to learn it and why not
+          at this point.
         </p>
         <ul className="list-disc list-inside space-y-2 mb-4">
           <li>Implemented database triggers and procedures.</li>

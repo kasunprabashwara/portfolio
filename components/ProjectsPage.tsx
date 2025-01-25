@@ -93,10 +93,10 @@ const ProjectsPage = () => {
         const currentX = event.touches[0].clientX;
         const deltaX = startX - currentX;
 
-        if (deltaX > 100) {
+        if (deltaX > 50) {
           handleArrowClick("right");
           startX = null;
-        } else if (deltaX < -100) {
+        } else if (deltaX < -50) {
           handleArrowClick("left");
           startX = null;
         }
